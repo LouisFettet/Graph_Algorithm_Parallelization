@@ -1,0 +1,125 @@
+package main
+
+import (
+	"fmt"
+//	"math/rand"
+)
+
+type Node struct {
+	x, y int
+}
+
+type Arc struct {
+	node1, node2 Node
+	capacity, weight int
+}
+
+type Graph struct {
+	arcs []Arc
+}
+
+/*
+func (g *Graph) addNode(node Node) *Graph {
+	g.nodes	= append(g.nodes, node)
+	return g
+}
+*/
+
+func (g *Graph) addArc(arc Arc) *Graph {
+	g.arcs = append(g.arcs, arc)
+	return g
+}
+
+func genGraph(n, a int) Graph {
+	g := Graph{}
+	for i:=0; i<n; i++ {
+		j := (i+1)%n
+		fmt.Println(i,j)
+		newnode :=
+		newarc := Arc{i,j,1000,0}
+		g.addArc(newarc)
+	}
+	return g
+}
+
+func main(){
+	g := genGraph(50,100)
+	/*
+	g := Graph{}
+	n := Node{1,3}
+	m := Node{4,5}
+	a := Arc{n,m,6,0}
+	g.addNode(n)
+	g.addNode(m)
+	g.addArc(a)
+	*/
+	fmt.Println(g)
+}
+
+
+
+
+
+
+/*
+type Graph struct {
+	Node struct {
+		x, y int
+	}
+	Arc struct {
+		node1, node2 Node
+		capacity, weight int
+	}
+}
+
+//type Build interface {}
+
+func main(){
+	g := Graph{}
+	n := g.Node
+	a := g.Arc
+	fmt.Println(g, n, a)
+}
+*/
+
+
+/*
+type Node struct {
+	x, y int
+}
+
+type Arc struct {
+	node1, node2 Node
+	capacity, weight int
+}
+
+type Graph struct {
+	nodes []Node
+}
+
+
+func (g *Graph) addNode (node Node) []Node {
+	graph.nodes = append(graph.nodes, node)
+	return graph.nodes
+}
+
+
+func main() {
+	n := Node{1,2}
+	m := Node{3,6}
+	p := Node{2,3}
+
+	a := Arc{n,m,7,0}
+	b := Arc{m,p,1,0}
+	c := Arc{n,p,3,0}
+
+
+	g := Graph{}
+	g.nodes = addNode(g,n)
+	g.nodes = addNode(g,m)
+	
+
+	fmt.Println(n,m,p)
+	fmt.Println(a,b,c)
+}
+*/
