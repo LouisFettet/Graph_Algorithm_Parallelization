@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-//	"math/rand"
+	"math/rand"
 )
 
 type Node struct {
@@ -18,15 +18,40 @@ type Graph struct {
 	nodemap map[Node][]Arc
 }
 
-func genGraph() *Graph {
+func genBlankGraph() *Graph {
 	return &Graph{nodemap: make(map[Node][]Arc)}
+}
+
+func genRandomGraph(nodenum, arcnum int) *Graph {
+	g := genBlankGraph()
+	for i:=0; i<nodenum; i++ {
+		xcoord := rand.Intn(nodenum/2)
+		ycoord := rand.Intn(nodenum/2)
+		nodetoadd := Node{xcoord,ycoord}
+		if _, found := g.nodemap[nodetoadd]; !found{
+			g.addNode(nodetoadd)
+		} else {
+			i = i - 1
+		}
+	}
+	nodelist := []Node{}
+	for node := range g.nodemap {
+		nodelist = append(nodelist, node)
+		fmt.Println(nodelist)
+	}
+	length := len(nodelist)
+	for i:=0; i<arcnum; i++ {
+		arctoadd := Arc{nodelist[rand.Intn(length)], nodelist[rand.Intn(length)], 0, rand.Intn(100)}
+		g.addArc(arctoadd)
+		}
+	return g
 }
 
 func (g *Graph) addNode(node Node) *Graph {
 	if _, found := g.nodemap[node]; !found {
 		null := []Arc{}
 		g.nodemap[node] = null
-	}
+	} 
 	return g
 }
 
@@ -75,13 +100,14 @@ func main(){
 	p := Node{4,2}
 	a := Arc{n,m,0,10}
 	b := Arc{m,p,0,3}
-	g := genGraph()
+	g := genBlankGraph()
 	g.addNode(n)
 	g.addNode(m)
 	g.addNode(p)
 	g.addArc(a)
 	g.addArc(b)
-	fmt.Println(g.nodemap)
+	k := genRandomGraph(10,5)
+	fmt.Println(k)
 }
 
 
@@ -215,23 +241,4 @@ func (g *Graph) addNode (node Node) []Node {
 	return graph.nodes
 }
 
-
-func main() {
-	n := Node{1,2}
-	m := Node{3,6}
-	p := Node{2,3}
-
-	a := Arc{n,m,7,0}
-	b := Arc{m,p,1,0}
-	c := Arc{n,p,3,0}
-
-
-	g := Graph{}
-	g.nodes = addNode(g,n)
-	g.nodes = addNode(g,m)
-	
-
-	fmt.Println(n,m,p)
-	fmt.Println(a,b,c)
-}
 */
