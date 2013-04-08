@@ -25,6 +25,14 @@ type Arc struct {
 	weight, capacity int
 }
 
+type Neighbour struct {
+	/*
+	 Neighbour structure for the graph
+	*/
+	neighbour        Node
+	weight, capacity int
+}
+
 type Graph struct {
 	/*
 	 Graph structure containing a map data structure in which the nodes
@@ -36,12 +44,13 @@ type Graph struct {
 	           [{{node1.x, node1.y},{node2.x, node2.y}, weight, capacity}]
 	      ]}
 	*/
-	nodemap map[Node][]Arc
+	nodemap map[Node][]Neighbour
+	arclist []Arc
 }
 
 func genBlankGraph() *Graph {
 	//Initialization of graph's nodemap structure
-	return &Graph{nodemap: make(map[Node][]Arc)}
+	return &Graph{nodemap: make(map[Node][]Neighbour)}
 }
 
 /*
@@ -79,7 +88,7 @@ func (g *Graph) addNode(node Node) *Graph {
 	*/
 	fmt.Println("addNode() called for node ", node)
 	if _, found := g.nodemap[node]; !found {
-		null := []Arc{}
+		null := []Neighbour{}
 		g.nodemap[node] = null
 		fmt.Println("\tNode ", node, " added to graph.")
 	} else {
@@ -89,8 +98,24 @@ func (g *Graph) addNode(node Node) *Graph {
 }
 
 func (g *Graph) addArc(arc Arc) *Graph {
-
 	fmt.Println("addArc() called for arc ", arc)
+	for i := 0; i < len(g.arclist); i++ {
+		if ((g.arclist[i].node1 == arc.node1) || (g.arclist[i].node1 == arc.node2)) && ((g.arclist[i].node2 == arc.node1) || (g.arclist[i].node2 == arc.node2)) {
+			fmt.Println("Arc already exists, so we need to check weights and capacities to see if it needs to be updated.")
+			if g.arclist[i].weight == arc.weight {
+				fmt.Println("Arc exists with same weight.  Exit.")
+				return g
+			}
+		}
+	}
+	fmt.Println("Arc does not exist in graph, so it will be added.")
+	g.arclist = append(g.arclist, arc)
+	fmt.Println("Arc has been added into the list; ", g.arclist)
+	fmt.Println("Now neighbours will be populated.")
+	return g
+}
+
+/*	fmt.Println("addArc() called for arc ", arc)
 
 	if _, found := g.nodemap[arc.node1]; !found {
 		fmt.Println("Error, could not find node ", arc.node1)
@@ -102,51 +127,64 @@ func (g *Graph) addArc(arc Arc) *Graph {
 		fmt.Println("\tBoth nodes exist in graph.")
 		arclist1 := g.nodemap[arc.node1]
 		arcamt1 := len(arclist1)
-		fmt.Println("\tNode value ", arc.node1, " has key arc list:\n\t\t", arclist1, "\n\t\twith length ", arcamt1, "\n")
+		fmt.Println("\tNode value ", arc.node1, " has key arc list:\n\t\t", arclist1, "\n\t\twith length ", arcamt1)
 
 		arclist2 := g.nodemap[arc.node2]
 		arcamt2 := len(arclist2)
-		fmt.Println("\tNode value ", arc.node2, " has key arc list:\n\t\t", arclist2, "\n\t\twith length ", arcamt2, "\n")
+		fmt.Println("\tNode value ", arc.node2, " has key arc list:\n\t\t", arclist2, "\n\t\twith length ", arcamt2)
 
 		if arcamt1 == 0 || arcamt2 == 0 {
-			fmt.Println("One of the node values has no arcs, so the arc is added into both node values' key arc lists and the graph is returned.\n")
+			fmt.Println("One of the node values has no arcs, so the arc is added into both node values' key arc lists and the graph is returned.")
 			g.nodemap[arc.node1] = append(arclist1, arc)
 			g.nodemap[arc.node2] = append(arclist2, arc)
 			return g
-		} else {
-			for i := 0; i < arcamt1; i++ {
-				fmt.Println("node1 is ", arclist1[i])
-				if arclist1[i] == arc {
-					fmt.Println("Error, arc ", arclist1[i], " already exists.(1)")
-					return g
-				}
 
+		} else {
+			fmt.Println("\tBoth node values already have key arc lists, so we need to check to see if this particular arc already exists.")
+			for i := 0; i < arcamt1; i++ {
+				fmt.Println("\tArc iteration", i, " for node ", arc.node1, " is ", arclist1[i])
+				if arclist1[i].node1 == arc.node1 && arclist1[i].node2 == arc.node2 {
+					fmt.Println("\tArc", arclist1[i], " exists, so it will be updated to", arc)
+					fmt.Println("\t\tThe whole graph beforehand:", g.nodemap)
+					fmt.Println("\t\tThe arclist beforehand for node", arc.node1, ":", arclist1)
+					delete(g.nodemap, arc.node1)
+					arclist1[i] = arc
+					fmt.Println("\t\tThe graph now:", g.nodemap[arc.node1])
+					fmt.Println("\t\tThe arclist now:", arclist1)
+					g.nodemap[arc.node1] = arclist1
+				} else {
+					fmt.Println("\tArc being checked is not arc to be added.")
+				}
 			}
 			for i := 0; i < arcamt2; i++ {
-				fmt.Println("node2 is ", arclist2[i])
-				if arclist2[i] == arc {
-					fmt.Println("Error, arc ", arclist2[i], " already exists.(2)")
-					return g
+				fmt.Println("\tArc iteration", i, " for node ", arc.node2, " is ", arclist2[i])
+				if arclist2[i].node1 == arc.node1 && arclist2[i].node2 == arc.node2 {
+					delete(g.nodemap, arc.node2)
+					arclist2[i] = arc
+					g.nodemap[arc.node2] = arclist2
+				} else {
+					fmt.Println("\tArc being checked is not arc to be added.")
 				}
 			}
-			g.nodemap[arc.node1] = append(arclist1, arc)
-			g.nodemap[arc.node2] = append(arclist2, arc)
 		}
 	}
 	return g
-}
+}*/
 
 func main() {
 
 	n := Node{1, 3}
 	m := Node{8, 9}
 	p := Node{4, 2}
-	q := Node{1, 3}
+	//q := Node{1, 3}
 
 	a := Arc{n, m, 0, 10}
-	b := Arc{m, p, 0, 3}
-	c := Arc{m, p, 1, 3}
-	d := Arc{m, q, 0, 5}
+	b := Arc{m, n, 1, 10}
+	c := Arc{n, m, 1, 10}
+	d := Arc{m, p, 0, 3}
+	//b := Arc{m, p, 0, 3}
+	//c := Arc{m, p, 1, 3}
+	//d := Arc{m, q, 0, 5}
 
 	g := genBlankGraph()
 
@@ -154,17 +192,30 @@ func main() {
 	g.addNode(m)
 	g.addNode(p)
 
-	fmt.Println("\nThe graph contains: \n\t", g, "\n")
-
 	g.addArc(a)
-
-	fmt.Println("\nThe graph contains: \n\t", g, "\n")
-
+	g.addArc(a)
 	g.addArc(b)
 	g.addArc(c)
 	g.addArc(d)
 
-	fmt.Println(g)
+	fmt.Println("\nThe graph contains: \n\t", g, "\n")
+
+	/*
+		g.addArc(a)
+
+		fmt.Println("\nThe graph contains: \n\t", g, "\n")
+
+		g.addArc(b)
+
+		fmt.Println("\nThe graph contains: \n\t", g, "\n")
+
+		g.addArc(c)
+
+		fmt.Println("\nThe graph contains: \n\t", g, "\n")
+
+		g.addArc(d)
+
+		fmt.Println(g)*/
 	//k := genRandomGraph(10, 5)
 	//fmt.Println(k)
 }
