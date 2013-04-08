@@ -1,6 +1,7 @@
 Graph_Algorithm_Parallelization
 ===============================
-#### Edmonds-Karp Algorithm Implementation in the Go Programming Language
+-------------------------------
+## Edmonds-Karp Algorithm Implementation in the Go Programming Language
 This is my Computer Science Capstone Project for the Spring 2013 Semester.
 
 ### Inspiration
