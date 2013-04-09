@@ -4,7 +4,7 @@ import (
 	//printing
 	"fmt"
 	//random integers
-//	"math/rand"
+	"math/rand"
 )
 
 type Node struct {
@@ -53,15 +53,15 @@ func genBlankGraph() *Graph {
 	return &Graph{nodemap: make(map[Node][]Neighbour)}
 }
 
-/*
 func genRandomGraph(nodenum, arcnum int) *Graph {
+	fmt.Println("genRandomGraph() called for ", nodenum, " nodes and ", arcnum, "connecting arcs.")
 	g := genBlankGraph()
 	for i := 0; i < nodenum; i++ {
-		xcoord := rand.Intn(nodenum / 2)
-		ycoord := rand.Intn(nodenum / 2)
-		nodetoadd := Node{xcoord, ycoord}
-		if _, found := g.nodemap[nodetoadd]; !found {
-			g.addNode(nodetoadd)
+		xcoord := rand.Intn(nodenum * 2)
+		ycoord := rand.Intn(nodenum * 2)
+		newnode := Node{xcoord, ycoord}
+		if _, found := g.nodemap[newnode]; !found {
+			g.addNode(newnode)
 		} else {
 			i = i - 1
 		}
@@ -73,12 +73,16 @@ func genRandomGraph(nodenum, arcnum int) *Graph {
 	}
 	length := len(nodelist)
 	for i := 0; i < arcnum; i++ {
-		arctoadd := Arc{nodelist[rand.Intn(length)], nodelist[rand.Intn(length)], 0, rand.Intn(100)}
+		node1 := nodelist[rand.Intn(length)]
+		node2 := nodelist[rand.Intn(length)]
+		for node1 == node2 {
+			node2 = nodelist[rand.Intn(length)]
+		}
+		arctoadd := Arc{node1, node2, 0, rand.Intn(100)}
 		g.addArc(arctoadd)
 	}
 	return g
 }
-*/
 
 func (g *Graph) addNode(node Node) *Graph {
 	/*
@@ -130,35 +134,6 @@ func (g *Graph) addArc(arc Arc) *Graph {
 }
 
 func main() {
-/*
-	n := Node{1, 2}
-	m := Node{4, 6}
-	p := Node{3, 5}
-	q := Node{5, 3}
-	r := Node{1, 2}
-
-	a := Arc{n, m, 0, 3}
-	b := Arc{n, m, 0, 3}
-	c := Arc{n, m, 2, 3}
-	d := Arc{n, p, 0, 6}
-
-	g := genBlankGraph()
-
-	g.addNode(n)
-	g.addNode(n)
-	g.addNode(m)
-	g.addNode(p)
-	g.addNode(q)
-	g.addNode(r)
-
-	g.addArc(a)
-	g.addArc(a)
-	g.addArc(b)
-	g.addArc(c)
-	g.addArc(d)
-
-	g := genRandomGraph(5, 5)
-
+	g := genRandomGraph(5, 7)
 	fmt.Println("\nThe graph's nodemap contains:\n", g.nodemap)
-*/
 }
