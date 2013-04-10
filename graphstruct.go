@@ -133,7 +133,14 @@ func (g *Graph) addArc(arc Arc) *Graph {
 	return g
 }
 
+func (g *Graph) getNeighbours(node Node) []Neighbour {
+	return g.nodemap[node]
+}
+
 func main() {
 	g := genRandomGraph(5, 7)
 	fmt.Println("\nThe graph's nodemap contains:\n", g.nodemap)
+	a := Node{1,8}
+	neighbourlist := getNeighbours(a)
+	fmt.Println("\n", neighbourlist)
 }
