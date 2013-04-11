@@ -27,7 +27,8 @@ type Arc struct {
 
 type Neighbour struct {
 	/*
-	 Neighbour structure for the graph
+	 Neighbour structure for the graph's map.
+	      {{neighbour.x, neighbour.y}, weight, capacity}
 	*/
 	neighbour        Node
 	weight, capacity int
@@ -35,14 +36,10 @@ type Neighbour struct {
 
 type Graph struct {
 	/*
-	 Graph structure containing a map data structure in which the nodes
-	 are values and a list of arcs connected to that node is the key.
-	      {map[
-	        {node1.x, node1.y}:
-	           [{{node1.x, node1.y},{node2.x, node2.y}, weight, capacity}]
-	        {node2.x, node2.y}:
-	           [{{node1.x, node1.y},{node2.x, node2.y}, weight, capacity}]
-	      ]}
+	 Graph structure containing two distinct structures:
+	 1. A map data structure in which the nodes are values and a list 
+	    of neighbours connected to that node is the key.
+	 2. A list of all arcs connecting nodes in the graph.
 	*/
 	nodemap map[Node][]Neighbour
 	arclist []Arc
@@ -133,14 +130,14 @@ func (g *Graph) addArc(arc Arc) *Graph {
 	return g
 }
 
-func (g *Graph) getNeighbours(node Node) []Neighbour {
-	return g.nodemap[node]
+func (g *Graph) getNeighbours(n Node) []Neighbour {
+	return g.nodemap[n]
 }
 
 func main() {
 	g := genRandomGraph(5, 7)
 	fmt.Println("\nThe graph's nodemap contains:\n", g.nodemap)
-	a := Node{1,8}
-	neighbourlist := getNeighbours(a)
+	a := Node{6,0}
+	neighbourlist := g.getNeighbours(a)
 	fmt.Println("\n", neighbourlist)
 }
