@@ -1,3 +1,6 @@
+//graphstruct.go
+//Implementation of a Graph Data Structure
+
 package graph
 
 import (
@@ -51,6 +54,14 @@ func (g *Graph) GetNeighbours(node Node) []Neighbour {
 	 Graph-associated method to return the neighbours of a node.
 	*/
 	return g.Nodemap[node]
+}
+
+func (g *Graph) GetNodeList() []Node {
+	nodelist := []Node{}
+	for node := range g.Nodemap {
+		nodelist = append(nodelist, node)
+	}
+	return nodelist
 }
 
 func (g *Graph) AddNode(node Node) *Graph {
@@ -144,10 +155,7 @@ func GenRandomGraph(nodenum, connectnum int) *Graph {
 		}
 	}
 	//Put all the nodes into a list so they can be randomly chosen.
-	nodelist := []Node{}
-	for node := range g.Nodemap {
-		nodelist = append(nodelist, node)
-	}
+	nodelist := g.GetNodeList()
 	//Loop to add connections
 	for i := 0; i < connectnum; i++ {
 		node1 := nodelist[rand.Intn(nodenum)]
