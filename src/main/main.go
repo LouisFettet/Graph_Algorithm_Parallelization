@@ -35,7 +35,7 @@ func main() {
 	gograph.AddConnection(d, f, 0, 6)
 	gograph.AddConnection(e, g, 0, 1)
 	gograph.AddConnection(f, g, 0, 9)
-	flow, gograph := graph.EdmondsKarp(gograph, a, g)
-	fmt.Println(flow, "\n", gograph)
-	graph.BreadthFirstSearch(gograph)
+	fmt.Println(gograph)
+	maxflow, solution := graph.EdmondsKarp(gograph, a, g)
+	fmt.Println(maxflow, solution)
 }

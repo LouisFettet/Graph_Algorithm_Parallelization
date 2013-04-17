@@ -1,48 +1,44 @@
 //queue.go
 //FIFO Queue Structure for BreadthFirstSearch()
-//This code was slightly modified from gist.github.com/moraes/2141121
 
 package graph
 
-// NewQueue returns a new queue with the given initial size.
-func NewQueue(size int) *Queue {
-	return &Queue{
-		nodes: make([]Node, size),
-		size:  size,
-	}
-}
-
-// Queue is a basic FIFO queue based on a circular list that resizes as needed.
 type Queue struct {
-	nodes []Node
+	// FIFO Queue structure containing a list of nodes and a size.
+	items []Node
 	size  int
-	head  int
-	tail  int
-	count int
 }
 
-// Push adds a node to the queue.
-func (q *Queue) Push(n Node) {
-	if q.head == q.tail && q.count > 0 {
-		nodes := make([]Node, len(q.nodes)+q.size)
-		copy(nodes, q.nodes[q.head:])
-		copy(nodes[len(q.nodes)-q.head:], q.nodes[:q.head])
-		q.head = 0
-		q.tail = len(q.nodes)
-		q.nodes = nodes
+func GenQueue(length int) *Queue {
+	//Initializes a new Queue.
+	return &Queue{
+		items: make([]Node, length),
+		size:  length,
 	}
-	q.nodes[q.tail] = n
-	q.tail = (q.tail + 1) % len(q.nodes)
-	q.count++
 }
 
-// Pop removes and returns a node from the queue in first to last order.
-func (q *Queue) Pop() Node {
-	if q.count == 0 {
+func (q *Queue) GetSize() int {
+	//Returns the size of the queue.
+	return q.size
+}
+
+func (q *Queue) Enqueue(node Node) {
+	//Adds an item to the end of the queue.
+	q.size++
+	newq := GenQueue(q.size)
+	copy(newq.items, q.items)
+	q.items = newq.items
+	q.items[q.size-1] = node
+}
+
+func (q *Queue) Dequeue() Node {
+	//Returns an item from the first spot in the queue, deletes it, and 
+	//reorganizes the remaining items without disrupting the order.
+	if q.size == 0 {
 		return Node{}
 	}
-	node := q.nodes[q.head]
-	q.head = (q.head + 1) % len(q.nodes)
-	q.count--
+	node := q.items[0]
+	q.items = q.items[1:]
+	q.size--
 	return node
 }

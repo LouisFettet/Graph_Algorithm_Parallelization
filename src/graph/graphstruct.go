@@ -36,8 +36,8 @@ type Graph struct {
 	           {{neighbour2} weight2 capacity2} 
 	      ]
 	      {node2}:[
-	 	   {{neighbour1} weight1 capacity1}, 
-	           {{neighbour2} weight2 capacity2} 
+	                                                                                                                                                                                                                                                                                                                                                                                 	   {{neighbour3} weight3 capacity3}, 
+	           {{neighbour4} weight4 capacity4} 
 	      ]
 	 ]
 	*/
@@ -46,7 +46,9 @@ type Graph struct {
 
 func GenBlankGraph() *Graph {
 	//Mandatory initialization of graph's nodemap structure
-	return &Graph{Nodemap: make(map[Node][]Neighbour)}
+	return &Graph{
+		Nodemap: make(map[Node][]Neighbour),
+	}
 }
 
 func (g *Graph) GetNeighbours(node Node) []Neighbour {
@@ -57,6 +59,9 @@ func (g *Graph) GetNeighbours(node Node) []Neighbour {
 }
 
 func (g *Graph) GetNodeList() []Node {
+	/*
+	 Graph-associated method to return a list of all initialized nodes.
+	*/
 	nodelist := []Node{}
 	for node := range g.Nodemap {
 		nodelist = append(nodelist, node)
@@ -79,53 +84,27 @@ func (g *Graph) AddNode(node Node) *Graph {
 
 func (g *Graph) AddConnection(node1 Node, node2 Node, cost int, total int) *Graph {
 	/*
-	 Graph-associated method to add or modify a connection between two
-	 nodes and record them into the map.  Returns the graph exactly as is
-	 if the nodes do not exist.
+	 Graph-associated method to initialize a connection between two nodes 
+	 and record them into the map.  Returns the graph exactly as is if the
+	 nodes are the same, if the nodes do not exist, or if the nodes are 
+	 already connected.
 	*/
-	//Check to make sure the nodes are different
+	//Check to make sure the nodes are different.
 	if node1 == node2 {
 		return g
 	}
-	//Check for existence of nodes in graph
+	//Check for existence of nodes in graph.
 	if _, found := g.Nodemap[node1]; !found {
 		return g
 	} else if _, found := g.Nodemap[node2]; !found {
 		return g
 	}
-	//Check to see if connection already exists between nodes
-	//We need only check one node to confirm a connection, but we will
-	//make copies of both lists.
-	neighbourlistnode1 := g.GetNeighbours(node1)
-	neighbourlistnode2 := g.GetNeighbours(node2)
-	for neighbour := range neighbourlistnode1 {
-		if neighbourlistnode1[neighbour].neighbour_node == node2 {
-			//The connection exists, so we have to check for an
-			//update to the weight.  First we verify the capacity.
-			if neighbourlistnode1[neighbour].capacity == total {
-				//We now know the function was called to 
-				//update the weight of the connection.
-				//So we iterate through both node keys,
-				//update the correct location, and return g.
-				for i := 0; i < len(neighbourlistnode1); i++ {
-					if neighbourlistnode1[i].neighbour_node == node2 {
-						updatedconnect := Neighbour{node2, cost, total}
-						g.Nodemap[node1][i] = updatedconnect
-					}
-				}
-				for i := 0; i < len(neighbourlistnode2); i++ {
-					if neighbourlistnode2[i].neighbour_node == node1 {
-						updatedconnect := Neighbour{node1, cost, total}
-						g.Nodemap[node2][i] = updatedconnect
-					}
-				}
-				return g
-			} else {
-				//The nodes are connected, but the function was called using
-				//a different capacity.  Capacity is a constant that once
-				//set cannot be changed.  Only the weight can change.
-				return g
-			}
+	//Check to see if connection already exists between nodes.
+	//We need only check one node to confirm a connection.
+	neighbourlist := g.GetNeighbours(node1)
+	for neighbour := range neighbourlist {
+		if neighbourlist[neighbour].neighbour_node == node2 {
+			return g
 		}
 	}
 	//If we get here it means that both nodes exist in the graph, but
@@ -135,6 +114,42 @@ func (g *Graph) AddConnection(node1 Node, node2 Node, cost int, total int) *Grap
 	neighbour2 := Neighbour{node1, cost, total}
 	g.Nodemap[node1] = append(g.Nodemap[node1], neighbour1)
 	g.Nodemap[node2] = append(g.Nodemap[node2], neighbour2)
+	return g
+}
+
+func (g *Graph) UpdateWeight(node1 Node, node2 Node, weight int) *Graph {
+	/*
+	 Graph-associated method to update the weight of a connection.
+	 Returns the graph exactly as is if the new weight is greater than the
+	 connection's initial capacity.
+	 Note:  Unlike AddConnection(), the order in which the nodes are input
+	 into this function DOES matter. 
+	      node1's connection with node2 is updated with the weight given
+	      node2's connection with node1 is updated with the residual
+	*/
+	neighbourlistnode1 := g.GetNeighbours(node1)
+	for i := 0; i < len(neighbourlistnode1); i++ {
+		//Iterate until we find node2...
+		if neighbourlistnode1[i].neighbour_node == node2 {
+			//Check to make sure the weight is not greater than
+			//the capacity.
+			if weight <= neighbourlistnode1[i].capacity {
+				//Update the connection with the new weight.
+				updatedconnect := Neighbour{node2, weight, neighbourlistnode1[i].capacity}
+				g.Nodemap[node1][i] = updatedconnect
+			}
+		}
+	}
+	//Repeat the process for node2, but take the reciprocal.
+	neighbourlistnode2 := g.GetNeighbours(node2)
+	for i := 0; i < len(neighbourlistnode2); i++ {
+		if neighbourlistnode2[i].neighbour_node == node1 {
+			if -weight >= -(neighbourlistnode2[i].capacity) {
+				updatedconnect := Neighbour{node1, -weight, neighbourlistnode2[i].capacity}
+				g.Nodemap[node2][i] = updatedconnect
+			}
+		}
+	}
 	return g
 }
 
@@ -160,7 +175,8 @@ func GenRandomGraph(nodenum, connectnum int) *Graph {
 	for i := 0; i < connectnum; i++ {
 		node1 := nodelist[rand.Intn(nodenum)]
 		node2 := nodelist[rand.Intn(nodenum)]
-		//Can't connect a node to itself
+		//Can't connect a node to itself, so we loop until the nodes 
+		//are different.
 		for node1 == node2 {
 			node2 = nodelist[rand.Intn(nodenum)]
 		}
