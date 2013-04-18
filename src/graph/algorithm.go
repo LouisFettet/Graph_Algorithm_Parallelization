@@ -7,6 +7,7 @@ import "fmt"
 
 func min(x, y int) int {
 	if x < y {
+		grg
 		return x
 	} else if y < x {
 		return y
