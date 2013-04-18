@@ -16,4 +16,4 @@ The challenge of this project is three-fold:
 3. Parallelization of the algorithm.  Once the algorithm has been implemented, further study will be necessary in order to cut it up into separate “jobs” or “threads” that will be set up to run concurrently.  Above all, this will be the most complicated step because it will require a fundamental understanding both of how the algorithm is executed and how Go handles its coroutines.
 
 ### Current Status
-![Great Success](http://i.imgur.com/3yhwL.jpg)
+![Great Success](http://i.imgur.com/hPpN5.jpg)
