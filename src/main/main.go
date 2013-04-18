@@ -36,6 +36,7 @@ func main() {
 	gograph.AddNeighbour(e, b, 1)
 	gograph.AddNeighbour(e, g, 1)
 	fmt.Println(gograph)
+
 	maxflow, solution := graph.EdmondsKarp(gograph, a, g)
 	fmt.Println(maxflow, solution)
 }

@@ -58,6 +58,15 @@ func (g *Graph) GetNeighbours(node Node) []Neighbour {
 	return g.Nodemap[node]
 }
 
+func (g *Graph) GetWeight(source Node, destination Node) int {
+	for _, possdest := range g.GetNeighbours(source) {
+		if possdest.neighbour_node == destination {
+			return possdest.weight
+		}
+	}
+	return 0
+}
+
 func (g *Graph) GetNodeList() []Node {
 	/*
 	 Graph-associated method to return a list of all initialized nodes.
@@ -84,9 +93,9 @@ func (g *Graph) AddNode(node Node) *Graph {
 
 func (g *Graph) AddNeighbour(source Node, destination Node, capacity int) *Graph {
 	/*
-	 Graph-associated method to initialize a connection between a source
-	 node and destination node and record the connection and its residual
-	 connection into the map.
+	 Graph-associated method to initialize a connection with no weight 
+	 between a source node and destination node and record the connection 
+	 and its residual connection into the map.
 	 Returns the graph exactly as is if the nodes are the same, if the 
 	 nodes do not exist, or if the connection already exists.
 	*/
@@ -134,7 +143,7 @@ func (g *Graph) UpdateWeight(source Node, destination Node, weight int) *Graph {
 		if neighbourlistsource[i].neighbour_node == destination {
 			//Check to make sure the weight is not greater than
 			//the capacity.
-			if weight <= neighbourlistsource[i].capacity {
+			if Abs(weight) <= Abs(neighbourlistsource[i].capacity) {
 				//Update the connection with the new weight.
 				updatedconnect := Neighbour{destination, weight, neighbourlistsource[i].capacity}
 				g.Nodemap[source][i] = updatedconnect
@@ -145,7 +154,7 @@ func (g *Graph) UpdateWeight(source Node, destination Node, weight int) *Graph {
 	neighbourlistdest := g.GetNeighbours(destination)
 	for i := 0; i < len(neighbourlistdest); i++ {
 		if neighbourlistdest[i].neighbour_node == source {
-			if -weight >= neighbourlistdest[i].capacity {
+			if Abs(weight) <= Abs(neighbourlistdest[i].capacity) {
 				updatedconnect := Neighbour{source, -weight, neighbourlistdest[i].capacity}
 				g.Nodemap[destination][i] = updatedconnect
 			}
