@@ -1,8 +1,8 @@
 //plotgraph.go
 
-/*
-package plotgraph
+package graph
 
+/*
 func getPoints(nodelist []Node) plotter.XYs {
 	points := make(plotter.XYs, len(nodelist))
 	for node := range nodelist {

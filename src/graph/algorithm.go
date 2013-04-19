@@ -1,92 +1,105 @@
-//algorithm.go
-//Implementation of the Edmonds-Karp Algorithm for Computing the Maximum Flow in a Flow Network
+// algorithm.go
+// Implementation of the Edmonds-Karp Algorithm for computing the maximum
+// flow in a graph's flow network.
 
+// Package graph provides both primitives for initializing graph structures
+// and functions to solve the maximum flow of a graph.  Testing methods and 
+// graphic interfaces are also available. 
 package graph
 
-import "fmt"
-
+// Function EdmondsKarp accepts a graph with a valid source and sink node,
+// and returns the maximum flow as an integer along with a graph with a valid
+// flow network. Utilizes BFS in order to find valid paths through the graph.
 func EdmondsKarp(g *Graph, source Node, sink Node) (int, *Graph) {
-	fmt.Println("EdmondsKarp started.")
+	// Initialize the maximum flow.
 	maxflow := 0
+	// Loop until the BFS cannot return a valid path.
 	for {
 		pathcap, path := BreadthFirstSearch(g, source, sink)
-		fmt.Println("BFS returned a pathcap of  ", pathcap, "and a path of:\n", path)
 		if pathcap == 0 {
 			break
 		}
+		// Add the flow of the path found by the BFS to the maxflow.
 		maxflow = maxflow + pathcap
-		fmt.Println("The new maxflow is: ", maxflow)
-		v := sink
-		fmt.Println("Backtrack search begin.")
-		for v != source {
-			u := path[v]
-			fmt.Println("v is ", v, "and u is ", u)
-			currweight := g.GetWeight(u, v)
-			fmt.Println("currweight for u, v is ", currweight)
-			g.UpdateWeight(u, v, (currweight + pathcap))
-			fmt.Println("The new weight is ", g.GetWeight(u, v))
-			v = u
+		// Backtrack search through the graph and save the new flow.
+		node := sink
+		for node != source {
+			// Grab the parent of the node.
+			parent := path[node]
+			// Grab the current weight of the connection.
+			currweight := g.GetWeight(parent, node)
+			// And add the new flow to the current weight.
+			// Note: UpdateWeight also updates the residual path.
+			g.UpdateWeight(parent, node, (currweight + pathcap))
+			// Set the node equal to the parent so the backtrack
+			// search can continue.
+			node = parent
 		}
 	}
-	fmt.Println("EdmondsKarp complete.")
+	// The BFS couldn't return a valid path, so we return.
 	return maxflow, g
 }
 
+// Function BreadthFirstSearch accepts a graph with a valid source and sink 
+// node, and returns a valid path through the graph's flow network along with
+// the flow of the found path.
 func BreadthFirstSearch(g *Graph, source Node, sink Node) (int, map[Node]Node) {
-	fmt.Println("\nBFS started.")
+	// Create a map in which nodes have node keys corresponding to a
+	// parent/source to child/destination relationship.  This will be the
+	// path returned.
 	nodelist := g.GetNodeList()
 	length := len(nodelist)
 	path := make(map[Node]Node, length)
+	// Initialize a node which can be used to tell if a node has been 
+	// discovered yet or not, and give every node that key to begin.
 	notvisited := Node{-1, -1}
 	for _, node := range nodelist {
 		path[node] = notvisited
 	}
-	//Make sure source is not rediscovered.
+	// Give the source a different key to ensure it is not rediscovered.
 	path[source] = Node{-2, -2}
-	//Capacity of found path to node.
+	// Initialize another map that records the capacity of a found path 
+	// to a node.
 	capmap := make(map[Node]int, length)
 	//Set to infinity; math.Inf() is a float64, so we just make it huge.
 	capmap[source] = 100000
 	q := GenQueue(0)
 	q.Enqueue(source)
-	fmt.Println("Everything initialized... while loop started.")
 	for q.GetSize() > 0 {
-		fmt.Println("New Iteration, Queue is: ", q, "and has size ", q.GetSize())
 		u := q.Dequeue()
-		fmt.Println("u = ", u)
 		for _, v := range g.GetNeighbours(u) {
-			fmt.Println("v.neighbour_node = ", v.neighbour_node)
-			fmt.Println("v.weight = ", v.weight)
-			fmt.Println("v.capacity = ", v.capacity)
 			if v.capacity-v.weight > 0 && path[v.neighbour_node] == notvisited {
-				fmt.Println("Path can proceed from u to v by pushing flow forward.")
+				// Path can proceed from u to v by pushing 
+				// flow forward.
 				path[v.neighbour_node] = u
 				capmap[v.neighbour_node] = Min(capmap[u], v.capacity-v.weight)
-				fmt.Println("The capacity of the path is now: ", capmap[v.neighbour_node])
 				if v.neighbour_node != sink {
-					fmt.Println("We have not reached the sink. We enqueue v.neighbour_node and continue.")
+					// We have not reached the sink. We 
+					// enqueue v.neighbour_node and 
+					// continue.
 					q.Enqueue(v.neighbour_node)
-					fmt.Println("The queue is now: ", q)
 				} else {
-					fmt.Println("We have reached the sink and we return.")
+					// We have reached the sink and we 
+					// return.
 					return capmap[sink], path
 				}
 			} else if v.capacity < 0 && v.weight < 0 && path[v.neighbour_node] == notvisited {
-				fmt.Println("Path can proceed from u to v by pushing flow backward.")
+				// Path can proceed from u to v by pushing 
+				// flow backward.
 				path[v.neighbour_node] = u
 				capmap[v.neighbour_node] = Min(capmap[u], v.weight-v.capacity)
-				fmt.Println("The capacity of the path is now: ", capmap[v.neighbour_node])
 				if v.neighbour_node != sink {
-					fmt.Println("We have not reached the sink.  We enqueue v.neighbour_node and continue.")
+					// We have not reached the sink.  
+					// We enqueue v.neighbour_node 
+					// and continue.
 					q.Enqueue(v.neighbour_node)
-					fmt.Println("The queue is now: ", q)
 				} else {
-					fmt.Println("We have reached the sink and we return.")
+					// We have reached the sink, so we
+					// return.
 					return capmap[sink], path
 				}
 			}
 		}
 	}
-	fmt.Println("BFS completed.")
 	return 0, path
 }

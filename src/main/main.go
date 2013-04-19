@@ -1,6 +1,8 @@
-//main.go
-//Executable File for Testing and Example Purposes
+// main.go
+// Executable File for Testing and Example Purposes
 
+// Package main is a simple package for testing the Edmonds-Karp algorithm
+// on graphs generated within the graph package.
 package main
 
 import (
@@ -8,35 +10,19 @@ import (
 	"graph"
 )
 
+// Function main currently runs the algorithm on six different graphs.
+// As of now all tests return correct solutions.  Very exciting.
 func main() {
-	gograph := graph.GenBlankGraph()
-	a := graph.Node{0, 0}
-	b := graph.Node{0, 2}
-	c := graph.Node{1, 1}
-	d := graph.Node{2, 0}
-	e := graph.Node{2, 2}
-	f := graph.Node{3, 0}
-	g := graph.Node{3, 2}
-	gograph.AddNode(a)
-	gograph.AddNode(b)
-	gograph.AddNode(c)
-	gograph.AddNode(d)
-	gograph.AddNode(e)
-	gograph.AddNode(f)
-	gograph.AddNode(g)
-	gograph.AddNeighbour(a, b, 3)
-	gograph.AddNeighbour(a, d, 3)
-	gograph.AddNeighbour(b, c, 4)
-	gograph.AddNeighbour(c, a, 3)
-	gograph.AddNeighbour(c, d, 1)
-	gograph.AddNeighbour(c, e, 2)
-	gograph.AddNeighbour(d, e, 2)
-	gograph.AddNeighbour(d, f, 6)
-	gograph.AddNeighbour(f, g, 9)
-	gograph.AddNeighbour(e, b, 1)
-	gograph.AddNeighbour(e, g, 1)
-	fmt.Println(gograph)
-
-	maxflow, solution := graph.EdmondsKarp(gograph, a, g)
-	fmt.Println(maxflow, solution)
+	flow, solution := graph.SolveGraph1()
+	fmt.Println(flow, solution)
+	flow, solution = graph.SolveGraph2()
+	fmt.Println(flow, solution)
+	flow, solution = graph.SolveGraph3()
+	fmt.Println(flow, solution)
+	flow, solution = graph.SolveGraph4()
+	fmt.Println(flow, solution)
+	flow, solution = graph.SolveGraph5()
+	fmt.Println(flow, solution)
+	flow, solution = graph.SolveGraph6()
+	fmt.Println(flow, solution)
 }
