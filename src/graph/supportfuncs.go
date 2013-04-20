@@ -3,9 +3,6 @@
 // math package. Package math only supports 64-bit floats, and the numbers that
 // are being used in the graph package are exclusively integers.
 
-// Package graph provides both primitives for initializing graph structures
-// and functions to solve the maximum flow of a graph.  Testing methods and 
-// graphic interfaces are also available.
 package graph
 
 // Function Min returns the smaller of two integers.

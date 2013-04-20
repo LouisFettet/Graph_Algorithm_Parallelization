@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <title>graph - The Go Programming Language</title>
+
+<link type="text/css" rel="stylesheet" href="/doc/style.css">
+<script type="text/javascript" src="/doc/godocs.js"></script>
+
+</head>
+<body>
+
+<div id="topbar"><div class="container wide">
+
+<form method="GET" action="/search">
+<div id="menu">
+<a href="/doc/">Documents</a>
+<a href="/ref/">References</a>
+<a href="/pkg/">Packages</a>
+<a href="/project/">The Project</a>
+<a href="/help/">Help</a>
+<input type="text" id="search" name="q" class="inactive" value="Search">
+</div>
+<div id="heading"><a href="/">The Go Programming Language</a></div>
+</form>
+
+</div></div>
+
+<div id="page" class="wide">
+
+
+  <div id="plusone"><g:plusone size="small" annotation="none"></g:plusone></div>
+  <h1>Package graph</h1>
+
+
+
+
+<div id="nav"></div>
+
+
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+
+	
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "graph"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="#overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="#index">Index</a></dd>
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				<p>
+Package graph provides both primitives for initializing graph structures
+and functions to solve the maximum flow of a graph.  Testing methods and
+graphic interfaces are also available.
+</p>
+
+			</div>
+		</div>
+		
+	
+		<h2 id="index">Index</h2>
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+		<div id="manual-nav">
+			<dl>
+			
+			
+			
+				
+				<dd><a href="#Abs">func Abs(n int) int</a></dd>
+			
+				
+				<dd><a href="#BreadthFirstSearch">func BreadthFirstSearch(g *Graph, source Node, sink Node) (int, map[Node]Node)</a></dd>
+			
+				
+				<dd><a href="#EdmondsKarp">func EdmondsKarp(g *Graph, source Node, sink Node) (int, *Graph)</a></dd>
+			
+				
+				<dd><a href="#Min">func Min(x, y int) int</a></dd>
+			
+				
+				<dd><a href="#SolveGraph1">func SolveGraph1() (int, *Graph)</a></dd>
+			
+				
+				<dd><a href="#SolveGraph2">func SolveGraph2() (int, *Graph)</a></dd>
+			
+				
+				<dd><a href="#SolveGraph3">func SolveGraph3() (int, *Graph)</a></dd>
+			
+				
+				<dd><a href="#SolveGraph4">func SolveGraph4() (int, *Graph)</a></dd>
+			
+				
+				<dd><a href="#SolveGraph5">func SolveGraph5() (int, *Graph)</a></dd>
+			
+				
+				<dd><a href="#SolveGraph6">func SolveGraph6() (int, *Graph)</a></dd>
+			
+			
+				
+				<dd><a href="#Graph">type Graph</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#GenBlankGraph">func GenBlankGraph() *Graph</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#GenRandomGraph">func GenRandomGraph(nodenum, connectnum int) *Graph</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Graph.AddNeighbour">func (g *Graph) AddNeighbour(source Node, destination Node, capacity int) *Graph</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Graph.AddNode">func (g *Graph) AddNode(node Node) *Graph</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Graph.GetNeighbours">func (g *Graph) GetNeighbours(node Node) []Neighbour</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Graph.GetNodeList">func (g *Graph) GetNodeList() []Node</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Graph.GetWeight">func (g *Graph) GetWeight(source Node, destination Node) int</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Graph.UpdateWeight">func (g *Graph) UpdateWeight(source Node, destination Node, weight int) *Graph</a></dd>
+				
+			
+				
+				<dd><a href="#Neighbour">type Neighbour</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Node">type Node</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Queue">type Queue</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#GenQueue">func GenQueue(length int) *Queue</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Queue.Dequeue">func (q *Queue) Dequeue() Node</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Queue.Enqueue">func (q *Queue) Enqueue(node Node)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Queue.GetSize">func (q *Queue) GetSize() int</a></dd>
+				
+			
+			
+		</dl>
+
+		
+
+		
+			<h4>Package files</h4>
+			<p>
+			<span style="font-size:90%">
+			
+				<a href="/src/pkg/graph/algorithm.go">algorithm.go</a>
+			
+				<a href="/src/pkg/graph/graphstruct.go">graphstruct.go</a>
+			
+				<a href="/src/pkg/graph/plotgraph.go">plotgraph.go</a>
+			
+				<a href="/src/pkg/graph/queue.go">queue.go</a>
+			
+				<a href="/src/pkg/graph/supportfuncs.go">supportfuncs.go</a>
+			
+				<a href="/src/pkg/graph/test.go">test.go</a>
+			
+			</span>
+			</p>
+		
+	
+		
+		
+		
+			
+			
+			<h2 id="Abs">func <a href="/src/pkg/graph/supportfuncs.go?s=464:483#L9">Abs</a></h2>
+			<pre>func Abs(n int) int</pre>
+			<p>
+Function Abs returns the absolute value of an integer.
+</p>
+
+			
+		
+			
+			
+			<h2 id="BreadthFirstSearch">func <a href="/src/pkg/graph/algorithm.go?s=1511:1589#L33">BreadthFirstSearch</a></h2>
+			<pre>func BreadthFirstSearch(g *Graph, source Node, sink Node) (int, map[Node]Node)</pre>
+			<p>
+Function BreadthFirstSearch accepts a graph with a valid source and sink
+node, and returns a valid path through the graph&#39;s flow network along with
+the flow of the found path.
+</p>
+
+			
+		
+			
+			
+			<h2 id="EdmondsKarp">func <a href="/src/pkg/graph/algorithm.go?s=372:436#L1">EdmondsKarp</a></h2>
+			<pre>func EdmondsKarp(g *Graph, source Node, sink Node) (int, *Graph)</pre>
+			<p>
+Function EdmondsKarp accepts a graph with a valid source and sink node,
+and returns the maximum flow as an integer along with a graph with a valid
+flow network. Utilizes BFS in order to find valid paths through the graph.
+</p>
+
+			
+		
+			
+			
+			<h2 id="Min">func <a href="/src/pkg/graph/supportfuncs.go?s=312:334#L1">Min</a></h2>
+			<pre>func Min(x, y int) int</pre>
+			<p>
+Function Min returns the smaller of two integers.
+</p>
+
+			
+		
+			
+			
+			<h2 id="SolveGraph1">func <a href="/src/pkg/graph/test.go?s=264:296#L1">SolveGraph1</a></h2>
+			<pre>func SolveGraph1() (int, *Graph)</pre>
+			<p>
+Function SolveGraph1 runs the algorithm on the graph
+sample-problems/problem1;solution-5.png
+</p>
+
+			
+		
+			
+			
+			<h2 id="SolveGraph2">func <a href="/src/pkg/graph/test.go?s=999:1031#L32">SolveGraph2</a></h2>
+			<pre>func SolveGraph2() (int, *Graph)</pre>
+			<p>
+Function SolveGraph2 runs the algorithm on the graph
+sample-problems/problem2;solution-5.svg
+</p>
+
+			
+		
+			
+			
+			<h2 id="SolveGraph3">func <a href="/src/pkg/graph/test.go?s=1625:1657#L60">SolveGraph3</a></h2>
+			<pre>func SolveGraph3() (int, *Graph)</pre>
+			<p>
+Function SolveGraph3 runs the algorithm on the graph
+sample-problems/problem3;solution-15.jpg
+</p>
+
+			
+		
+			
+			
+			<h2 id="SolveGraph4">func <a href="/src/pkg/graph/test.go?s=2111:2143#L81">SolveGraph4</a></h2>
+			<pre>func SolveGraph4() (int, *Graph)</pre>
+			<p>
+Function SolveGraph4 runs the algorithm on the graph
+sample-problems/problem4;solution-3.gif
+</p>
+
+			
+		
+			
+			
+			<h2 id="SolveGraph5">func <a href="/src/pkg/graph/test.go?s=2768:2800#L111">SolveGraph5</a></h2>
+			<pre>func SolveGraph5() (int, *Graph)</pre>
+			<p>
+Function SolveGraph5 runs the algorithm on the graph
+sample-problems/problem5;solution-4.gif
+</p>
+
+			
+		
+			
+			
+			<h2 id="SolveGraph6">func <a href="/src/pkg/graph/test.go?s=3666:3698#L148">SolveGraph6</a></h2>
+			<pre>func SolveGraph6() (int, *Graph)</pre>
+			<p>
+Function SolveGraph6 runs the algorithm on the graph
+sample-problems/problem6;solution-21.jpg
+Note:  This graph follows different rules of flow between nodes, but this
+implementation still provides the correct answer.
+</p>
+
+			
+		
+		
+			
+			
+			<h2 id="Graph">type <a href="/src/pkg/graph/graphstruct.go?s=824:875#L19">Graph</a></h2>
+			<pre>type Graph struct {
+    Nodemap map[Node][]Neighbour
+}</pre>
+			<p>
+Graph structure containing a map in which the nodes are values and a list
+of neighbours connected to that node is the key.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="GenBlankGraph">func <a href="/src/pkg/graph/graphstruct.go?s=934:961#L24">GenBlankGraph</a></h3>
+				<pre>func GenBlankGraph() *Graph</pre>
+				<p>
+Function GenBlankGraph initializes a new empty graph.
+</p>
+
+				
+			
+				
+				<h3 id="GenRandomGraph">func <a href="/src/pkg/graph/graphstruct.go?s=5289:5340#L140">GenRandomGraph</a></h3>
+				<pre>func GenRandomGraph(nodenum, connectnum int) *Graph</pre>
+				<p>
+Function GenRandomGraph initializes a new graph, fills it with a given
+number of nodes and connections with random values, and returns the graph.
+</p>
+
+				
+			
+
+			
+				
+				<h3 id="Graph.AddNeighbour">func (*Graph) <a href="/src/pkg/graph/graphstruct.go?s=2720:2800#L77">AddNeighbour</a></h3>
+				<pre>func (g *Graph) AddNeighbour(source Node, destination Node, capacity int) *Graph</pre>
+				<p>
+Function AddNeighbour is a graph-associated method that initializes a
+connection with no weight between a given source and destination node and
+records the connection and its residual connection into the graph.  Returns
+the graph exactly as is if the nodes are the same, if the nodes do not
+exist, or if the connection already exists.
+</p>
+
+				
+				
+			
+				
+				<h3 id="Graph.AddNode">func (*Graph) <a href="/src/pkg/graph/graphstruct.go?s=2216:2257#L64">AddNode</a></h3>
+				<pre>func (g *Graph) AddNode(node Node) *Graph</pre>
+				<p>
+Function AddNode is a graph-associated method that initializes a node
+value, with no neighbours, into the map.  Returns the graph exactly as is
+if the node is already initialized.
+</p>
+
+				
+				
+			
+				
+				<h3 id="Graph.GetNeighbours">func (*Graph) <a href="/src/pkg/graph/graphstruct.go?s=1129:1181#L32">GetNeighbours</a></h3>
+				<pre>func (g *Graph) GetNeighbours(node Node) []Neighbour</pre>
+				<p>
+Function GetNeighbours is a graph-associated method that returns the
+neighbours of a given node.
+</p>
+
+				
+				
+			
+				
+				<h3 id="Graph.GetNodeList">func (*Graph) <a href="/src/pkg/graph/graphstruct.go?s=1784:1820#L51">GetNodeList</a></h3>
+				<pre>func (g *Graph) GetNodeList() []Node</pre>
+				<p>
+Function GetNodeList is a graph-associated method that returns a list
+of all initialized nodes.  Useful for iteration.
+</p>
+
+				
+				
+			
+				
+				<h3 id="Graph.GetWeight">func (*Graph) <a href="/src/pkg/graph/graphstruct.go?s=1359:1419#L38">GetWeight</a></h3>
+				<pre>func (g *Graph) GetWeight(source Node, destination Node) int</pre>
+				<p>
+Function GetWeight is a graph-associated method that returns the weight
+of a connection from a given source node to a given destination node.
+</p>
+
+				
+				
+			
+				
+				<h3 id="Graph.UpdateWeight">func (*Graph) <a href="/src/pkg/graph/graphstruct.go?s=4043:4121#L110">UpdateWeight</a></h3>
+				<pre>func (g *Graph) UpdateWeight(source Node, destination Node, weight int) *Graph</pre>
+				<p>
+Function UpdateWeight is a graph-associated method that updates the weight
+of both the connection between the source and destination and the residual
+connection between the destination and source. Returns the graph exactly
+as is if the new weight is greater than the connection&#39;s capacity.
+</p>
+
+				
+				
+			
+		
+			
+			
+			<h2 id="Neighbour">type <a href="/src/pkg/graph/graphstruct.go?s=622:692#L12">Neighbour</a></h2>
+			<pre>type Neighbour struct {
+    Neighbour_Node   Node
+    Weight, Capacity int
+}</pre>
+			<p>
+Neighbour structure containing a &#34;connected&#34; node, along with integers for
+the weight and capacity of the connection.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="Node">type <a href="/src/pkg/graph/graphstruct.go?s=465:495#L6">Node</a></h2>
+			<pre>type Node struct {
+    X, Y int
+}</pre>
+			<p>
+Node structure containing a simple (x, y) integer coordinate set.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="Queue">type <a href="/src/pkg/graph/queue.go?s=205:251#L1">Queue</a></h2>
+			<pre>type Queue struct {
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			<p>
+FIFO queue structure containing a list of nodes and a size.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="GenQueue">func <a href="/src/pkg/graph/queue.go?s=444:476#L6">GenQueue</a></h3>
+				<pre>func GenQueue(length int) *Queue</pre>
+				<p>
+Function GenQueue initializes a new queue with a given length.
+Note: Use a length of 0 to begin; GenQueue is also used in function Enqueue
+to copy the contents and update the size.
+</p>
+
+				
+			
+
+			
+				
+				<h3 id="Queue.Dequeue">func (*Queue) <a href="/src/pkg/graph/queue.go?s=1196:1226#L33">Dequeue</a></h3>
+				<pre>func (q *Queue) Dequeue() Node</pre>
+				<p>
+Function Dequeue returns an item from the first spot in the queue, deletes
+it from the queue, and reorganizes the remaining items without disrupting
+the queue&#39;s order.
+</p>
+
+				
+				
+			
+				
+				<h3 id="Queue.Enqueue">func (*Queue) <a href="/src/pkg/graph/queue.go?s=716:750#L19">Enqueue</a></h3>
+				<pre>func (q *Queue) Enqueue(node Node)</pre>
+				<p>
+Function Enqueue adds an item to the end of the queue.
+</p>
+
+				
+				
+			
+				
+				<h3 id="Queue.GetSize">func (*Queue) <a href="/src/pkg/graph/queue.go?s=608:637#L14">GetSize</a></h3>
+				<pre>func (q *Queue) GetSize() int</pre>
+				<p>
+Function GetSize returns the current size of the queue.
+</p>
+
+				
+				
+			
+		
+		</div>
+	
+
+	
+
+
+
+
+
+
+
+
+
+</div>
+
+<div id="footer">
+Build version go1.<br>
+Except as <a href="http://code.google.com/policies.html#restrictions">noted</a>,
+the content of this page is licensed under the
+Creative Commons Attribution 3.0 License,
+and code is licensed under a <a href="/LICENSE">BSD license</a>.<br>
+<a href="/doc/tos.html">Terms of Service</a> | 
+<a href="http://www.google.com/intl/en/privacy/privacy-policy.html">Privacy Policy</a>
+</div>
+
+</body>
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+</html>
+

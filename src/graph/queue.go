@@ -2,9 +2,6 @@
 // Generates a FIFO queue structure with accompanying functions for use by 
 // BreadthFirstSearch in algorithm.go
 
-// Package graph provides both primitives for initializing graph structures
-// and functions to solve the maximum flow of a graph.  Testing methods and 
-// graphic interfaces are also available.  
 package graph
 
 // FIFO queue structure containing a list of nodes and a size.

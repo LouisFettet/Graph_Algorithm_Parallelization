@@ -2,9 +2,6 @@
 // Implementation of the Edmonds-Karp Algorithm for computing the maximum
 // flow in a graph's flow network.
 
-// Package graph provides both primitives for initializing graph structures
-// and functions to solve the maximum flow of a graph.  Testing methods and 
-// graphic interfaces are also available. 
 package graph
 
 // Function EdmondsKarp accepts a graph with a valid source and sink node,
@@ -61,38 +58,53 @@ func BreadthFirstSearch(g *Graph, source Node, sink Node) (int, map[Node]Node) {
 	// Initialize another map that records the capacity of a found path 
 	// to a node.
 	capmap := make(map[Node]int, length)
-	//Set to infinity; math.Inf() is a float64, so we just make it huge.
-	capmap[source] = 100000
+	// Set the source's flow to infinity; math.Inf() is a float64, so we 
+	// just make it huge.
+	capmap[source] = 1000000
+	// Initialize a queue and enqueue the source node.
 	q := GenQueue(0)
 	q.Enqueue(source)
+	// Loop until the queue is empty.
 	for q.GetSize() > 0 {
+		// Grab the first node in the queue and check all neighbours
+		// until one is found where flow can be pushed.
 		u := q.Dequeue()
 		for _, v := range g.GetNeighbours(u) {
-			if v.capacity-v.weight > 0 && path[v.neighbour_node] == notvisited {
+			// If there is available capacity and the neighbour
+			// has not been visited yet...
+			if v.Capacity-v.Weight > 0 && path[v.Neighbour_Node] == notvisited {
 				// Path can proceed from u to v by pushing 
-				// flow forward.
-				path[v.neighbour_node] = u
-				capmap[v.neighbour_node] = Min(capmap[u], v.capacity-v.weight)
-				if v.neighbour_node != sink {
+				// flow forward. Set u to be the parent of v.
+				path[v.Neighbour_Node] = u
+				// Take the minimum of the flow of u and 
+				// and the available capacity of v.
+				capmap[v.Neighbour_Node] = Min(capmap[u], v.Capacity-v.Weight)
+				if v.Neighbour_Node != sink {
 					// We have not reached the sink. We 
-					// enqueue v.neighbour_node and 
+					// enqueue v.Neighbour_Node and 
 					// continue.
-					q.Enqueue(v.neighbour_node)
+					q.Enqueue(v.Neighbour_Node)
 				} else {
 					// We have reached the sink and we 
 					// return.
 					return capmap[sink], path
 				}
-			} else if v.capacity < 0 && v.weight < 0 && path[v.neighbour_node] == notvisited {
+				// Else if capacity and weight are both 
+				// negative (residual connection), and the 
+				// neighbour has not been visited
+			} else if v.Capacity < 0 && v.Weight < 0 && path[v.Neighbour_Node] == notvisited {
 				// Path can proceed from u to v by pushing 
-				// flow backward.
-				path[v.neighbour_node] = u
-				capmap[v.neighbour_node] = Min(capmap[u], v.weight-v.capacity)
-				if v.neighbour_node != sink {
+				// flow backward. Set u to be the parent of
+				// v.
+				path[v.Neighbour_Node] = u
+				// Take the minimum of the flow of u and 
+				// and the available capacity of v.
+				capmap[v.Neighbour_Node] = Min(capmap[u], v.Weight-v.Capacity)
+				if v.Neighbour_Node != sink {
 					// We have not reached the sink.  
-					// We enqueue v.neighbour_node 
+					// We enqueue v.Neighbour_Node 
 					// and continue.
-					q.Enqueue(v.neighbour_node)
+					q.Enqueue(v.Neighbour_Node)
 				} else {
 					// We have reached the sink, so we
 					// return.
@@ -101,5 +113,6 @@ func BreadthFirstSearch(g *Graph, source Node, sink Node) (int, map[Node]Node) {
 			}
 		}
 	}
+	// No paths were found, so we return 0 and whatever path was built.
 	return 0, path
 }

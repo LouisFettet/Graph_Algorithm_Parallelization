@@ -2,9 +2,6 @@
 // Generates graphs based on examples that can be found in the sample-problems
 // directory and runs the Edmonds-Karp algorithm on them.
 
-// Package graph provides both primitives for initializing graph structures
-// and functions to solve the maximum flow of a graph.  Testing methods and 
-// graphic interfaces are also available.  
 package graph
 
 // Function SolveGraph1 runs the algorithm on the graph 
