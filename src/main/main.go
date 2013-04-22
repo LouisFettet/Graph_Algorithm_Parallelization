@@ -8,21 +8,40 @@ package main
 import (
 	"fmt"
 	"graph"
+	"time"
 )
 
 // Function main currently runs the algorithm on six different graphs.
 // As of now all tests return correct solutions.  Very exciting.
 func main() {
+
+	start := time.Now()
 	flow, solution := graph.SolveGraph1()
-	fmt.Println(flow, solution)
+	runtime := time.Now().Sub(start)
+	fmt.Println("Graph 1\nMaximum Flow:", flow, "\nFinal Graph:", solution, "\nTotal Runtime:", runtime, "\n")
+
+	start = time.Now()
 	flow, solution = graph.SolveGraph2()
-	fmt.Println(flow, solution)
+	runtime = time.Now().Sub(start)
+	fmt.Println("Graph 2\nMaximum Flow:", flow, "\nFinal Graph:", solution, "\nTotal Runtime:", runtime, "\n")
+
+	start = time.Now()
 	flow, solution = graph.SolveGraph3()
-	fmt.Println(flow, solution)
+	runtime = time.Now().Sub(start)
+	fmt.Println("Graph 3\nMaximum Flow:", flow, "\nFinal Graph:", solution, "\nTotal Runtime:", runtime, "\n")
+
+	start = time.Now()
 	flow, solution = graph.SolveGraph4()
-	fmt.Println(flow, solution)
+	runtime = time.Now().Sub(start)
+	fmt.Println("Graph 4\nMaximum Flow:", flow, "\nFinal Graph:", solution, "\nTotal Runtime:", runtime, "\n")
+
+	start = time.Now()
 	flow, solution = graph.SolveGraph5()
-	fmt.Println(flow, solution)
+	runtime = time.Now().Sub(start)
+	fmt.Println("Graph 5\nMaximum Flow:", flow, "\nFinal Graph:", solution, "\nTotal Runtime:", runtime, "\n")
+
+	start = time.Now()
 	flow, solution = graph.SolveGraph6()
-	fmt.Println(flow, solution)
+	runtime = time.Now().Sub(start)
+	fmt.Println("Graph 6\nMaximum Flow:", flow, "\nFinal Graph:", solution, "\nTotal Runtime:", runtime, "\n")
 }
