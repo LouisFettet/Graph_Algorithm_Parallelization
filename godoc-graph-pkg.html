@@ -111,6 +111,9 @@ graphic interfaces are also available.
 				
 				<dd><a href="#SolveGraph6">func SolveGraph6() (int, *Graph)</a></dd>
 			
+				
+				<dd><a href="#SolveRandomGraph">func SolveRandomGraph() (int, *Graph, Node, Node)</a></dd>
+			
 			
 				
 				<dd><a href="#Graph">type Graph</a></dd>
@@ -119,7 +122,7 @@ graphic interfaces are also available.
 					<dd>&nbsp; &nbsp; <a href="#GenBlankGraph">func GenBlankGraph() *Graph</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#GenRandomGraph">func GenRandomGraph(nodenum, connectnum int) *Graph</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#GenRandomGraph">func GenRandomGraph(nodenum, connectnum, maxcap int) *Graph</a></dd>
 				
 				
 					
@@ -243,7 +246,7 @@ Function Min returns the smaller of two integers.
 		
 			
 			
-			<h2 id="SolveGraph1">func <a href="/src/pkg/graph/test.go?s=264:296#L1">SolveGraph1</a></h2>
+			<h2 id="SolveGraph1">func <a href="/src/pkg/graph/test.go?s=284:316#L1">SolveGraph1</a></h2>
 			<pre>func SolveGraph1() (int, *Graph)</pre>
 			<p>
 Function SolveGraph1 runs the algorithm on the graph
@@ -254,7 +257,7 @@ sample-problems/problem1;solution-5.png
 		
 			
 			
-			<h2 id="SolveGraph2">func <a href="/src/pkg/graph/test.go?s=999:1031#L32">SolveGraph2</a></h2>
+			<h2 id="SolveGraph2">func <a href="/src/pkg/graph/test.go?s=1019:1051#L34">SolveGraph2</a></h2>
 			<pre>func SolveGraph2() (int, *Graph)</pre>
 			<p>
 Function SolveGraph2 runs the algorithm on the graph
@@ -265,7 +268,7 @@ sample-problems/problem2;solution-5.svg
 		
 			
 			
-			<h2 id="SolveGraph3">func <a href="/src/pkg/graph/test.go?s=1625:1657#L60">SolveGraph3</a></h2>
+			<h2 id="SolveGraph3">func <a href="/src/pkg/graph/test.go?s=1645:1677#L62">SolveGraph3</a></h2>
 			<pre>func SolveGraph3() (int, *Graph)</pre>
 			<p>
 Function SolveGraph3 runs the algorithm on the graph
@@ -276,7 +279,7 @@ sample-problems/problem3;solution-15.jpg
 		
 			
 			
-			<h2 id="SolveGraph4">func <a href="/src/pkg/graph/test.go?s=2111:2143#L81">SolveGraph4</a></h2>
+			<h2 id="SolveGraph4">func <a href="/src/pkg/graph/test.go?s=2131:2163#L83">SolveGraph4</a></h2>
 			<pre>func SolveGraph4() (int, *Graph)</pre>
 			<p>
 Function SolveGraph4 runs the algorithm on the graph
@@ -287,7 +290,7 @@ sample-problems/problem4;solution-3.gif
 		
 			
 			
-			<h2 id="SolveGraph5">func <a href="/src/pkg/graph/test.go?s=2768:2800#L111">SolveGraph5</a></h2>
+			<h2 id="SolveGraph5">func <a href="/src/pkg/graph/test.go?s=2788:2820#L113">SolveGraph5</a></h2>
 			<pre>func SolveGraph5() (int, *Graph)</pre>
 			<p>
 Function SolveGraph5 runs the algorithm on the graph
@@ -298,13 +301,23 @@ sample-problems/problem5;solution-4.gif
 		
 			
 			
-			<h2 id="SolveGraph6">func <a href="/src/pkg/graph/test.go?s=3666:3698#L148">SolveGraph6</a></h2>
+			<h2 id="SolveGraph6">func <a href="/src/pkg/graph/test.go?s=3686:3718#L150">SolveGraph6</a></h2>
 			<pre>func SolveGraph6() (int, *Graph)</pre>
 			<p>
 Function SolveGraph6 runs the algorithm on the graph
 sample-problems/problem6;solution-21.jpg
 Note:  This graph follows different rules of flow between nodes, but this
 implementation still provides the correct answer.
+</p>
+
+			
+		
+			
+			
+			<h2 id="SolveRandomGraph">func <a href="/src/pkg/graph/test.go?s=4670:4719#L195">SolveRandomGraph</a></h2>
+			<pre>func SolveRandomGraph() (int, *Graph, Node, Node)</pre>
+			<p>
+Function SolveRandomGraph() runs the algorithm on a random graph.
 </p>
 
 			
@@ -339,8 +352,8 @@ Function GenBlankGraph initializes a new empty graph.
 				
 			
 				
-				<h3 id="GenRandomGraph">func <a href="/src/pkg/graph/graphstruct.go?s=5289:5340#L140">GenRandomGraph</a></h3>
-				<pre>func GenRandomGraph(nodenum, connectnum int) *Graph</pre>
+				<h3 id="GenRandomGraph">func <a href="/src/pkg/graph/graphstruct.go?s=5289:5348#L140">GenRandomGraph</a></h3>
+				<pre>func GenRandomGraph(nodenum, connectnum, maxcap int) *Graph</pre>
 				<p>
 Function GenRandomGraph initializes a new graph, fills it with a given
 number of nodes and connections with random values, and returns the graph.

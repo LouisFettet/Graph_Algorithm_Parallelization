@@ -147,7 +147,7 @@ func (g *Graph) UpdateWeight(source Node, destination Node, weight int) *Graph {
 
 // Function GenRandomGraph initializes a new graph, fills it with a given 
 // number of nodes and connections with random values, and returns the graph.
-func GenRandomGraph(nodenum, connectnum int) *Graph {
+func GenRandomGraph(nodenum, connectnum, maxcap int) *Graph {
 	// Initialize a new graph.
 	g := GenBlankGraph()
 	for i := 0; i < nodenum; i++ {
@@ -174,7 +174,12 @@ func GenRandomGraph(nodenum, connectnum int) *Graph {
 		for node1 == node2 {
 			node2 = nodelist[rand.Intn(nodenum)]
 		}
-		g.AddNeighbour(node1, node2, rand.Intn(100))
+		randcap := rand.Intn(maxcap)
+		// A capacity of zero is useless, so loop until not zero.
+		for randcap == 0 {
+			randcap = rand.Intn(maxcap)
+		}
+		g.AddNeighbour(node1, node2, randcap)
 	}
 	return g
 }

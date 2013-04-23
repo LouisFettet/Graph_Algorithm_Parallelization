@@ -44,4 +44,10 @@ func main() {
 	flow, solution = graph.SolveGraph6()
 	runtime = time.Now().Sub(start)
 	fmt.Println("Graph 6\nMaximum Flow:", flow, "\nFinal Graph:", solution, "\nTotal Runtime:", runtime, "\n")
+
+	start = time.Now()
+	flow, solution, sink, source := graph.SolveRandomGraph()
+	runtime = time.Now().Sub(start)
+	list := solution.GetNodeList()
+	fmt.Println("Random Graph\nNode List:", list, "\nSource Node:", source, "\nSink Node:", sink, "\nMaximum Flow:", flow, "\nFinal Graph:", solution, "\nTotal Runtime:", runtime)
 }

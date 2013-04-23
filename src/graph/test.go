@@ -4,6 +4,8 @@
 
 package graph
 
+import "math/rand"
+
 // Function SolveGraph1 runs the algorithm on the graph 
 // sample-problems/problem1;solution-5.png
 func SolveGraph1() (int, *Graph) {
@@ -197,4 +199,14 @@ func SolveGraph6() (int, *Graph) {
 	gr.AddNeighbour(h, t, 8)
 	flow, solution := EdmondsKarp(gr, s, t)
 	return flow, solution
+}
+
+// Function SolveRandomGraph() runs the algorithm on a random graph.
+func SolveRandomGraph() (int, *Graph, Node, Node) {
+	gr := GenRandomGraph(25, 75, 50)
+	nodelist := gr.GetNodeList()
+	source := nodelist[rand.Intn(25)]
+	sink := nodelist[rand.Intn(25)]
+	flow, solution := EdmondsKarp(gr, source, sink)
+	return flow, solution, source, sink
 }
