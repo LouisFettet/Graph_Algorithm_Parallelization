@@ -1,55 +1,12 @@
-// algorithm.go
-// Implementation of the Edmonds-Karp Algorithm for computing the maximum
-// flow in a graph's flow network.
+// parallel-algo.go
+// Implementation of a parallelized Breadth First Search
 
 package graph
 
-// Function EdmondsKarp accepts a graph with a valid source and sink node,
-// and returns the maximum flow as an integer along with a graph with a valid
-// flow network. Additionally, the function accepts a true or false boolean 
-// to determine whether the algorithm should be run with a parallelized or 
-// serial BFS in order to find valid paths through the graph.
-func EdmondsKarp(g *Graph, source Node, sink Node, parallel bool) (int, *Graph) {
-	// Initialize the maximum flow.
-	maxflow := 0
-	// Loop until the BFS cannot return a valid path.
-	for {
-		pathcap := 0
-		path := map[Node]Node{}
-		// Parallelized BFS check
-		if parallel == true {
-			pathcap, path = ParallelBFS(g, source, sink)
-		} else {
-			pathcap, path = BreadthFirstSearch(g, source, sink)
-		}
-		if pathcap == 0 {
-			break
-		}
-		// Add the flow of the path found by the BFS to the maxflow.
-		maxflow = maxflow + pathcap
-		// Backtrack search through the graph and save the new flow.
-		node := sink
-		for node != source {
-			// Grab the parent of the node.
-			parent := path[node]
-			// Grab the current weight of the connection.
-			currweight := g.GetWeight(parent, node)
-			// And add the new flow to the current weight.
-			// Note: UpdateWeight also updates the residual path.
-			g.UpdateWeight(parent, node, (currweight + pathcap))
-			// Set the node equal to the parent so the backtrack
-			// search can continue.
-			node = parent
-		}
-	}
-	// The BFS couldn't return a valid path, so we return.
-	return maxflow, g
-}
-
-// Function BreadthFirstSearch accepts a graph with a valid source and sink 
+// Function ParallelBFS accepts a graph with a valid source and sink 
 // node, and returns a valid path through the graph's flow network along with
-// the flow of the found path.
-func BreadthFirstSearch(g *Graph, source Node, sink Node) (int, map[Node]Node) {
+// the flow of the found path using channels to speed up runtime.
+func ParallelBFS(g *Graph, source Node, sink Node) (int, map[Node]Node) {
 	// Create a map in which nodes have node keys corresponding to a
 	// parent/source to child/destination relationship.  This will be the
 	// path returned.

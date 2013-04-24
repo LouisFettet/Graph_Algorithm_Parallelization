@@ -35,7 +35,7 @@ func SolveGraph1() (int, *Graph) {
 	gr.AddNeighbour(f, g, 9)
 	gr.AddNeighbour(e, b, 1)
 	gr.AddNeighbour(e, g, 1)
-	flow, solution := EdmondsKarp(gr, a, g)
+	flow, solution := EdmondsKarp(gr, a, g, true)
 	return flow, solution
 }
 
@@ -63,7 +63,7 @@ func SolveGraph2() (int, *Graph) {
 	gr.AddNeighbour(q, r, 4)
 	gr.AddNeighbour(q, t, 2)
 	gr.AddNeighbour(r, t, 3)
-	flow, solution := EdmondsKarp(gr, s, t)
+	flow, solution := EdmondsKarp(gr, s, t, false)
 	return flow, solution
 }
 
@@ -84,7 +84,7 @@ func SolveGraph3() (int, *Graph) {
 	gr.AddNeighbour(u, v, 15)
 	gr.AddNeighbour(u, t, 5)
 	gr.AddNeighbour(v, t, 10)
-	flow, solution := EdmondsKarp(gr, s, t)
+	flow, solution := EdmondsKarp(gr, s, t, false)
 	return flow, solution
 }
 
@@ -114,7 +114,7 @@ func SolveGraph4() (int, *Graph) {
 	gr.AddNeighbour(c, y, 2)
 	gr.AddNeighbour(d, e, 2)
 	gr.AddNeighbour(e, y, 3)
-	flow, solution := EdmondsKarp(gr, x, y)
+	flow, solution := EdmondsKarp(gr, x, y, false)
 	return flow, solution
 }
 
@@ -149,7 +149,7 @@ func SolveGraph5() (int, *Graph) {
 	gr.AddNeighbour(f, g, 5)
 	gr.AddNeighbour(g, e, 5)
 	gr.AddNeighbour(g, h, 1)
-	flow, solution := EdmondsKarp(gr, a, h)
+	flow, solution := EdmondsKarp(gr, a, h, false)
 	return flow, solution
 }
 
@@ -197,7 +197,7 @@ func SolveGraph6() (int, *Graph) {
 	gr.AddNeighbour(g, h, 5)
 	gr.AddNeighbour(h, e, 3)
 	gr.AddNeighbour(h, t, 8)
-	flow, solution := EdmondsKarp(gr, s, t)
+	flow, solution := EdmondsKarp(gr, s, t, false)
 	return flow, solution
 }
 
@@ -207,6 +207,6 @@ func SolveRandomGraph() (int, *Graph, Node, Node) {
 	nodelist := gr.GetNodeList()
 	source := nodelist[rand.Intn(25)]
 	sink := nodelist[rand.Intn(25)]
-	flow, solution := EdmondsKarp(gr, source, sink)
+	flow, solution := EdmondsKarp(gr, source, sink, false)
 	return flow, solution, source, sink
 }

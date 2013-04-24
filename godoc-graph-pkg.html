@@ -88,10 +88,13 @@ graphic interfaces are also available.
 				<dd><a href="#BreadthFirstSearch">func BreadthFirstSearch(g *Graph, source Node, sink Node) (int, map[Node]Node)</a></dd>
 			
 				
-				<dd><a href="#EdmondsKarp">func EdmondsKarp(g *Graph, source Node, sink Node) (int, *Graph)</a></dd>
+				<dd><a href="#EdmondsKarp">func EdmondsKarp(g *Graph, source Node, sink Node, parallel bool) (int, *Graph)</a></dd>
 			
 				
 				<dd><a href="#Min">func Min(x, y int) int</a></dd>
+			
+				
+				<dd><a href="#ParallelBFS">func ParallelBFS(g *Graph, source Node, sink Node) (int, map[Node]Node)</a></dd>
 			
 				
 				<dd><a href="#SolveGraph1">func SolveGraph1() (int, *Graph)</a></dd>
@@ -185,6 +188,8 @@ graphic interfaces are also available.
 			
 				<a href="/src/pkg/graph/graphstruct.go">graphstruct.go</a>
 			
+				<a href="/src/pkg/graph/parallel-algo.go">parallel-algo.go</a>
+			
 				<a href="/src/pkg/graph/plotgraph.go">plotgraph.go</a>
 			
 				<a href="/src/pkg/graph/queue.go">queue.go</a>
@@ -212,7 +217,7 @@ Function Abs returns the absolute value of an integer.
 		
 			
 			
-			<h2 id="BreadthFirstSearch">func <a href="/src/pkg/graph/algorithm.go?s=1511:1589#L33">BreadthFirstSearch</a></h2>
+			<h2 id="BreadthFirstSearch">func <a href="/src/pkg/graph/algorithm.go?s=1819:1897#L42">BreadthFirstSearch</a></h2>
 			<pre>func BreadthFirstSearch(g *Graph, source Node, sink Node) (int, map[Node]Node)</pre>
 			<p>
 Function BreadthFirstSearch accepts a graph with a valid source and sink
@@ -224,12 +229,14 @@ the flow of the found path.
 		
 			
 			
-			<h2 id="EdmondsKarp">func <a href="/src/pkg/graph/algorithm.go?s=372:436#L1">EdmondsKarp</a></h2>
-			<pre>func EdmondsKarp(g *Graph, source Node, sink Node) (int, *Graph)</pre>
+			<h2 id="EdmondsKarp">func <a href="/src/pkg/graph/algorithm.go?s=509:588#L2">EdmondsKarp</a></h2>
+			<pre>func EdmondsKarp(g *Graph, source Node, sink Node, parallel bool) (int, *Graph)</pre>
 			<p>
 Function EdmondsKarp accepts a graph with a valid source and sink node,
 and returns the maximum flow as an integer along with a graph with a valid
-flow network. Utilizes BFS in order to find valid paths through the graph.
+flow network. Additionally, the function accepts a true or false boolean
+to determine whether the algorithm should be run with a parallelized or
+serial BFS in order to find valid paths through the graph.
 </p>
 
 			
@@ -240,6 +247,18 @@ flow network. Utilizes BFS in order to find valid paths through the graph.
 			<pre>func Min(x, y int) int</pre>
 			<p>
 Function Min returns the smaller of two integers.
+</p>
+
+			
+		
+			
+			
+			<h2 id="ParallelBFS">func <a href="/src/pkg/graph/parallel-algo.go?s=307:378#L1">ParallelBFS</a></h2>
+			<pre>func ParallelBFS(g *Graph, source Node, sink Node) (int, map[Node]Node)</pre>
+			<p>
+Function ParallelBFS accepts a graph with a valid source and sink
+node, and returns a valid path through the graph&#39;s flow network along with
+the flow of the found path using channels to speed up runtime.
 </p>
 
 			
@@ -257,7 +276,7 @@ sample-problems/problem1;solution-5.png
 		
 			
 			
-			<h2 id="SolveGraph2">func <a href="/src/pkg/graph/test.go?s=1019:1051#L34">SolveGraph2</a></h2>
+			<h2 id="SolveGraph2">func <a href="/src/pkg/graph/test.go?s=1025:1057#L34">SolveGraph2</a></h2>
 			<pre>func SolveGraph2() (int, *Graph)</pre>
 			<p>
 Function SolveGraph2 runs the algorithm on the graph
@@ -268,7 +287,7 @@ sample-problems/problem2;solution-5.svg
 		
 			
 			
-			<h2 id="SolveGraph3">func <a href="/src/pkg/graph/test.go?s=1645:1677#L62">SolveGraph3</a></h2>
+			<h2 id="SolveGraph3">func <a href="/src/pkg/graph/test.go?s=1658:1690#L62">SolveGraph3</a></h2>
 			<pre>func SolveGraph3() (int, *Graph)</pre>
 			<p>
 Function SolveGraph3 runs the algorithm on the graph
@@ -279,7 +298,7 @@ sample-problems/problem3;solution-15.jpg
 		
 			
 			
-			<h2 id="SolveGraph4">func <a href="/src/pkg/graph/test.go?s=2131:2163#L83">SolveGraph4</a></h2>
+			<h2 id="SolveGraph4">func <a href="/src/pkg/graph/test.go?s=2151:2183#L83">SolveGraph4</a></h2>
 			<pre>func SolveGraph4() (int, *Graph)</pre>
 			<p>
 Function SolveGraph4 runs the algorithm on the graph
@@ -290,7 +309,7 @@ sample-problems/problem4;solution-3.gif
 		
 			
 			
-			<h2 id="SolveGraph5">func <a href="/src/pkg/graph/test.go?s=2788:2820#L113">SolveGraph5</a></h2>
+			<h2 id="SolveGraph5">func <a href="/src/pkg/graph/test.go?s=2815:2847#L113">SolveGraph5</a></h2>
 			<pre>func SolveGraph5() (int, *Graph)</pre>
 			<p>
 Function SolveGraph5 runs the algorithm on the graph
@@ -301,7 +320,7 @@ sample-problems/problem5;solution-4.gif
 		
 			
 			
-			<h2 id="SolveGraph6">func <a href="/src/pkg/graph/test.go?s=3686:3718#L150">SolveGraph6</a></h2>
+			<h2 id="SolveGraph6">func <a href="/src/pkg/graph/test.go?s=3720:3752#L150">SolveGraph6</a></h2>
 			<pre>func SolveGraph6() (int, *Graph)</pre>
 			<p>
 Function SolveGraph6 runs the algorithm on the graph
@@ -314,7 +333,7 @@ implementation still provides the correct answer.
 		
 			
 			
-			<h2 id="SolveRandomGraph">func <a href="/src/pkg/graph/test.go?s=4670:4719#L195">SolveRandomGraph</a></h2>
+			<h2 id="SolveRandomGraph">func <a href="/src/pkg/graph/test.go?s=4711:4760#L195">SolveRandomGraph</a></h2>
 			<pre>func SolveRandomGraph() (int, *Graph, Node, Node)</pre>
 			<p>
 Function SolveRandomGraph() runs the algorithm on a random graph.
