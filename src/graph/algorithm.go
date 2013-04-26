@@ -6,22 +6,14 @@ package graph
 
 // Function EdmondsKarp accepts a graph with a valid source and sink node,
 // and returns the maximum flow as an integer along with a graph with a valid
-// flow network. Additionally, the function accepts a true or false boolean 
-// to determine whether the algorithm should be run with a parallelized or 
-// serial BFS in order to find valid paths through the graph.
-func EdmondsKarp(g *Graph, source Node, sink Node, parallel bool) (int, *Graph) {
+// flow network.  The function runs a serial BFS in order to find valid paths 
+// through the graph.
+func EdmondsKarp(g *Graph, source Node, sink Node) (int, *Graph) {
 	// Initialize the maximum flow.
 	maxflow := 0
 	// Loop until the BFS cannot return a valid path.
 	for {
-		pathcap := 0
-		path := map[Node]Node{}
-		// Parallelized BFS check
-		if parallel == true {
-			pathcap, path = ParallelBFS(g, source, sink)
-		} else {
-			pathcap, path = BreadthFirstSearch(g, source, sink)
-		}
+		pathcap, path := BreadthFirstSearch(g, source, sink)
 		if pathcap == 0 {
 			break
 		}

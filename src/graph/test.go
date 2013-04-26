@@ -6,9 +6,12 @@ package graph
 
 import "math/rand"
 
+var flow int
+var solution *Graph
+
 // Function SolveGraph1 runs the algorithm on the graph 
 // sample-problems/problem1;solution-5.png
-func SolveGraph1() (int, *Graph) {
+func SolveGraph1(parallel bool) (int, *Graph) {
 	gr := GenBlankGraph()
 	a := Node{0, 0}
 	b := Node{0, 2}
@@ -35,13 +38,17 @@ func SolveGraph1() (int, *Graph) {
 	gr.AddNeighbour(f, g, 9)
 	gr.AddNeighbour(e, b, 1)
 	gr.AddNeighbour(e, g, 1)
-	flow, solution := EdmondsKarp(gr, a, g, true)
+	if parallel == false {
+		flow, solution = EdmondsKarp(gr, a, g)
+	} else {
+		flow, solution = ParallelEdmondsKarp(gr, a, g)
+	}
 	return flow, solution
 }
 
 // Function SolveGraph2 runs the algorithm on the graph 
 // sample-problems/problem2;solution-5.svg
-func SolveGraph2() (int, *Graph) {
+func SolveGraph2(parallel bool) (int, *Graph) {
 	gr := GenBlankGraph()
 	s := Node{0, 1}
 	o := Node{1, 0}
@@ -63,13 +70,17 @@ func SolveGraph2() (int, *Graph) {
 	gr.AddNeighbour(q, r, 4)
 	gr.AddNeighbour(q, t, 2)
 	gr.AddNeighbour(r, t, 3)
-	flow, solution := EdmondsKarp(gr, s, t, false)
+	if parallel == false {
+		flow, solution = EdmondsKarp(gr, s, t)
+	} else {
+		flow, solution = ParallelEdmondsKarp(gr, s, t)
+	}
 	return flow, solution
 }
 
 // Function SolveGraph3 runs the algorithm on the graph 
 // sample-problems/problem3;solution-15.jpg
-func SolveGraph3() (int, *Graph) {
+func SolveGraph3(parallel bool) (int, *Graph) {
 	gr := GenBlankGraph()
 	s := Node{0, 1}
 	u := Node{1, 0}
@@ -84,13 +95,17 @@ func SolveGraph3() (int, *Graph) {
 	gr.AddNeighbour(u, v, 15)
 	gr.AddNeighbour(u, t, 5)
 	gr.AddNeighbour(v, t, 10)
-	flow, solution := EdmondsKarp(gr, s, t, false)
+	if parallel == false {
+		flow, solution = EdmondsKarp(gr, s, t)
+	} else {
+		flow, solution = ParallelEdmondsKarp(gr, s, t)
+	}
 	return flow, solution
 }
 
 // Function SolveGraph4 runs the algorithm on the graph 
 // sample-problems/problem4;solution-3.gif
-func SolveGraph4() (int, *Graph) {
+func SolveGraph4(parallel bool) (int, *Graph) {
 	gr := GenBlankGraph()
 	x := Node{0, 1}
 	a := Node{1, 0}
@@ -114,13 +129,17 @@ func SolveGraph4() (int, *Graph) {
 	gr.AddNeighbour(c, y, 2)
 	gr.AddNeighbour(d, e, 2)
 	gr.AddNeighbour(e, y, 3)
-	flow, solution := EdmondsKarp(gr, x, y, false)
+	if parallel == false {
+		flow, solution = EdmondsKarp(gr, x, y)
+	} else {
+		flow, solution = ParallelEdmondsKarp(gr, x, y)
+	}
 	return flow, solution
 }
 
 // Function SolveGraph5 runs the algorithm on the graph 
 // sample-problems/problem5;solution-4.gif
-func SolveGraph5() (int, *Graph) {
+func SolveGraph5(parallel bool) (int, *Graph) {
 	gr := GenBlankGraph()
 	a := Node{0, 2}
 	b := Node{1, 2}
@@ -149,7 +168,11 @@ func SolveGraph5() (int, *Graph) {
 	gr.AddNeighbour(f, g, 5)
 	gr.AddNeighbour(g, e, 5)
 	gr.AddNeighbour(g, h, 1)
-	flow, solution := EdmondsKarp(gr, a, h, false)
+	if parallel == false {
+		flow, solution = EdmondsKarp(gr, a, h)
+	} else {
+		flow, solution = ParallelEdmondsKarp(gr, a, h)
+	}
 	return flow, solution
 }
 
@@ -157,7 +180,7 @@ func SolveGraph5() (int, *Graph) {
 // sample-problems/problem6;solution-21.jpg
 // Note:  This graph follows different rules of flow between nodes, but this
 // implementation still provides the correct answer.
-func SolveGraph6() (int, *Graph) {
+func SolveGraph6(parallel bool) (int, *Graph) {
 	gr := GenBlankGraph()
 	s := Node{0, 2}
 	a := Node{1, 4}
@@ -197,16 +220,24 @@ func SolveGraph6() (int, *Graph) {
 	gr.AddNeighbour(g, h, 5)
 	gr.AddNeighbour(h, e, 3)
 	gr.AddNeighbour(h, t, 8)
-	flow, solution := EdmondsKarp(gr, s, t, false)
+	if parallel == false {
+		flow, solution = EdmondsKarp(gr, s, t)
+	} else {
+		flow, solution = ParallelEdmondsKarp(gr, s, t)
+	}
 	return flow, solution
 }
 
 // Function SolveRandomGraph() runs the algorithm on a random graph.
-func SolveRandomGraph() (int, *Graph, Node, Node) {
-	gr := GenRandomGraph(25, 75, 50)
+func SolveRandomGraph(parallel bool) (int, *Graph, Node, Node) {
+	gr := GenRandomGraph(100, 300, 50)
 	nodelist := gr.GetNodeList()
-	source := nodelist[rand.Intn(25)]
-	sink := nodelist[rand.Intn(25)]
-	flow, solution := EdmondsKarp(gr, source, sink, false)
+	source := nodelist[rand.Intn(100)]
+	sink := nodelist[rand.Intn(100)]
+	if parallel == false {
+		flow, solution = EdmondsKarp(gr, source, sink)
+	} else {
+		flow, solution = ParallelEdmondsKarp(gr, source, sink)
+	}
 	return flow, solution, source, sink
 }

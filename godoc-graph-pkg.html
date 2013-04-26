@@ -88,7 +88,7 @@ graphic interfaces are also available.
 				<dd><a href="#BreadthFirstSearch">func BreadthFirstSearch(g *Graph, source Node, sink Node) (int, map[Node]Node)</a></dd>
 			
 				
-				<dd><a href="#EdmondsKarp">func EdmondsKarp(g *Graph, source Node, sink Node, parallel bool) (int, *Graph)</a></dd>
+				<dd><a href="#EdmondsKarp">func EdmondsKarp(g *Graph, source Node, sink Node) (int, *Graph)</a></dd>
 			
 				
 				<dd><a href="#Min">func Min(x, y int) int</a></dd>
@@ -97,25 +97,31 @@ graphic interfaces are also available.
 				<dd><a href="#ParallelBFS">func ParallelBFS(g *Graph, source Node, sink Node) (int, map[Node]Node)</a></dd>
 			
 				
-				<dd><a href="#SolveGraph1">func SolveGraph1() (int, *Graph)</a></dd>
+				<dd><a href="#ParallelEdmondsKarp">func ParallelEdmondsKarp(g *Graph, source Node, sink Node) (int, *Graph)</a></dd>
 			
 				
-				<dd><a href="#SolveGraph2">func SolveGraph2() (int, *Graph)</a></dd>
+				<dd><a href="#SetNotVisited">func SetNotVisited(nodelist []Node, path map[Node]Node, notvisited Node, head int, tail int)</a></dd>
 			
 				
-				<dd><a href="#SolveGraph3">func SolveGraph3() (int, *Graph)</a></dd>
+				<dd><a href="#SolveGraph1">func SolveGraph1(parallel bool) (int, *Graph)</a></dd>
 			
 				
-				<dd><a href="#SolveGraph4">func SolveGraph4() (int, *Graph)</a></dd>
+				<dd><a href="#SolveGraph2">func SolveGraph2(parallel bool) (int, *Graph)</a></dd>
 			
 				
-				<dd><a href="#SolveGraph5">func SolveGraph5() (int, *Graph)</a></dd>
+				<dd><a href="#SolveGraph3">func SolveGraph3(parallel bool) (int, *Graph)</a></dd>
 			
 				
-				<dd><a href="#SolveGraph6">func SolveGraph6() (int, *Graph)</a></dd>
+				<dd><a href="#SolveGraph4">func SolveGraph4(parallel bool) (int, *Graph)</a></dd>
 			
 				
-				<dd><a href="#SolveRandomGraph">func SolveRandomGraph() (int, *Graph, Node, Node)</a></dd>
+				<dd><a href="#SolveGraph5">func SolveGraph5(parallel bool) (int, *Graph)</a></dd>
+			
+				
+				<dd><a href="#SolveGraph6">func SolveGraph6(parallel bool) (int, *Graph)</a></dd>
+			
+				
+				<dd><a href="#SolveRandomGraph">func SolveRandomGraph(parallel bool) (int, *Graph, Node, Node)</a></dd>
 			
 			
 				
@@ -186,15 +192,15 @@ graphic interfaces are also available.
 			
 				<a href="/src/pkg/graph/algorithm.go">algorithm.go</a>
 			
-				<a href="/src/pkg/graph/graphstruct.go">graphstruct.go</a>
+				<a href="/src/pkg/graph/graph-struct.go">graph-struct.go</a>
 			
 				<a href="/src/pkg/graph/parallel-algo.go">parallel-algo.go</a>
 			
-				<a href="/src/pkg/graph/plotgraph.go">plotgraph.go</a>
+				<a href="/src/pkg/graph/plot-graph.go">plot-graph.go</a>
 			
 				<a href="/src/pkg/graph/queue.go">queue.go</a>
 			
-				<a href="/src/pkg/graph/supportfuncs.go">supportfuncs.go</a>
+				<a href="/src/pkg/graph/support-funcs.go">support-funcs.go</a>
 			
 				<a href="/src/pkg/graph/test.go">test.go</a>
 			
@@ -207,7 +213,7 @@ graphic interfaces are also available.
 		
 			
 			
-			<h2 id="Abs">func <a href="/src/pkg/graph/supportfuncs.go?s=464:483#L9">Abs</a></h2>
+			<h2 id="Abs">func <a href="/src/pkg/graph/support-funcs.go?s=464:483#L9">Abs</a></h2>
 			<pre>func Abs(n int) int</pre>
 			<p>
 Function Abs returns the absolute value of an integer.
@@ -217,7 +223,7 @@ Function Abs returns the absolute value of an integer.
 		
 			
 			
-			<h2 id="BreadthFirstSearch">func <a href="/src/pkg/graph/algorithm.go?s=1819:1897#L42">BreadthFirstSearch</a></h2>
+			<h2 id="BreadthFirstSearch">func <a href="/src/pkg/graph/algorithm.go?s=1534:1612#L34">BreadthFirstSearch</a></h2>
 			<pre>func BreadthFirstSearch(g *Graph, source Node, sink Node) (int, map[Node]Node)</pre>
 			<p>
 Function BreadthFirstSearch accepts a graph with a valid source and sink
@@ -229,21 +235,20 @@ the flow of the found path.
 		
 			
 			
-			<h2 id="EdmondsKarp">func <a href="/src/pkg/graph/algorithm.go?s=509:588#L2">EdmondsKarp</a></h2>
-			<pre>func EdmondsKarp(g *Graph, source Node, sink Node, parallel bool) (int, *Graph)</pre>
+			<h2 id="EdmondsKarp">func <a href="/src/pkg/graph/algorithm.go?s=395:459#L1">EdmondsKarp</a></h2>
+			<pre>func EdmondsKarp(g *Graph, source Node, sink Node) (int, *Graph)</pre>
 			<p>
 Function EdmondsKarp accepts a graph with a valid source and sink node,
 and returns the maximum flow as an integer along with a graph with a valid
-flow network. Additionally, the function accepts a true or false boolean
-to determine whether the algorithm should be run with a parallelized or
-serial BFS in order to find valid paths through the graph.
+flow network.  The function runs a serial BFS in order to find valid paths
+through the graph.
 </p>
 
 			
 		
 			
 			
-			<h2 id="Min">func <a href="/src/pkg/graph/supportfuncs.go?s=312:334#L1">Min</a></h2>
+			<h2 id="Min">func <a href="/src/pkg/graph/support-funcs.go?s=312:334#L1">Min</a></h2>
 			<pre>func Min(x, y int) int</pre>
 			<p>
 Function Min returns the smaller of two integers.
@@ -253,7 +258,7 @@ Function Min returns the smaller of two integers.
 		
 			
 			
-			<h2 id="ParallelBFS">func <a href="/src/pkg/graph/parallel-algo.go?s=307:378#L1">ParallelBFS</a></h2>
+			<h2 id="ParallelBFS">func <a href="/src/pkg/graph/parallel-algo.go?s=1608:1679#L36">ParallelBFS</a></h2>
 			<pre>func ParallelBFS(g *Graph, source Node, sink Node) (int, map[Node]Node)</pre>
 			<p>
 Function ParallelBFS accepts a graph with a valid source and sink
@@ -265,8 +270,28 @@ the flow of the found path using channels to speed up runtime.
 		
 			
 			
-			<h2 id="SolveGraph1">func <a href="/src/pkg/graph/test.go?s=284:316#L1">SolveGraph1</a></h2>
-			<pre>func SolveGraph1() (int, *Graph)</pre>
+			<h2 id="ParallelEdmondsKarp">func <a href="/src/pkg/graph/parallel-algo.go?s=440:512#L3">ParallelEdmondsKarp</a></h2>
+			<pre>func ParallelEdmondsKarp(g *Graph, source Node, sink Node) (int, *Graph)</pre>
+			<p>
+Function ParallelEdmondsKarp accepts a graph with a valid source and sink
+node, and returns the maximum flow as an integer along with a graph with a
+valid flow network. The function runs a parallelized BFS in order to find
+valid paths through the graph.
+</p>
+
+			
+		
+			
+			
+			<h2 id="SetNotVisited">func <a href="/src/pkg/graph/parallel-algo.go?s=5361:5453#L138">SetNotVisited</a></h2>
+			<pre>func SetNotVisited(nodelist []Node, path map[Node]Node, notvisited Node, head int, tail int)</pre>
+			
+			
+		
+			
+			
+			<h2 id="SolveGraph1">func <a href="/src/pkg/graph/test.go?s=318:363#L4">SolveGraph1</a></h2>
+			<pre>func SolveGraph1(parallel bool) (int, *Graph)</pre>
 			<p>
 Function SolveGraph1 runs the algorithm on the graph
 sample-problems/problem1;solution-5.png
@@ -276,8 +301,8 @@ sample-problems/problem1;solution-5.png
 		
 			
 			
-			<h2 id="SolveGraph2">func <a href="/src/pkg/graph/test.go?s=1025:1057#L34">SolveGraph2</a></h2>
-			<pre>func SolveGraph2() (int, *Graph)</pre>
+			<h2 id="SolveGraph2">func <a href="/src/pkg/graph/test.go?s=1152:1197#L41">SolveGraph2</a></h2>
+			<pre>func SolveGraph2(parallel bool) (int, *Graph)</pre>
 			<p>
 Function SolveGraph2 runs the algorithm on the graph
 sample-problems/problem2;solution-5.svg
@@ -287,8 +312,8 @@ sample-problems/problem2;solution-5.svg
 		
 			
 			
-			<h2 id="SolveGraph3">func <a href="/src/pkg/graph/test.go?s=1658:1690#L62">SolveGraph3</a></h2>
-			<pre>func SolveGraph3() (int, *Graph)</pre>
+			<h2 id="SolveGraph3">func <a href="/src/pkg/graph/test.go?s=1877:1922#L73">SolveGraph3</a></h2>
+			<pre>func SolveGraph3(parallel bool) (int, *Graph)</pre>
 			<p>
 Function SolveGraph3 runs the algorithm on the graph
 sample-problems/problem3;solution-15.jpg
@@ -298,8 +323,8 @@ sample-problems/problem3;solution-15.jpg
 		
 			
 			
-			<h2 id="SolveGraph4">func <a href="/src/pkg/graph/test.go?s=2151:2183#L83">SolveGraph4</a></h2>
-			<pre>func SolveGraph4() (int, *Graph)</pre>
+			<h2 id="SolveGraph4">func <a href="/src/pkg/graph/test.go?s=2462:2507#L98">SolveGraph4</a></h2>
+			<pre>func SolveGraph4(parallel bool) (int, *Graph)</pre>
 			<p>
 Function SolveGraph4 runs the algorithm on the graph
 sample-problems/problem4;solution-3.gif
@@ -309,8 +334,8 @@ sample-problems/problem4;solution-3.gif
 		
 			
 			
-			<h2 id="SolveGraph5">func <a href="/src/pkg/graph/test.go?s=2815:2847#L113">SolveGraph5</a></h2>
-			<pre>func SolveGraph5() (int, *Graph)</pre>
+			<h2 id="SolveGraph5">func <a href="/src/pkg/graph/test.go?s=3218:3263#L132">SolveGraph5</a></h2>
+			<pre>func SolveGraph5(parallel bool) (int, *Graph)</pre>
 			<p>
 Function SolveGraph5 runs the algorithm on the graph
 sample-problems/problem5;solution-4.gif
@@ -320,8 +345,8 @@ sample-problems/problem5;solution-4.gif
 		
 			
 			
-			<h2 id="SolveGraph6">func <a href="/src/pkg/graph/test.go?s=3720:3752#L150">SolveGraph6</a></h2>
-			<pre>func SolveGraph6() (int, *Graph)</pre>
+			<h2 id="SolveGraph6">func <a href="/src/pkg/graph/test.go?s=4215:4260#L173">SolveGraph6</a></h2>
+			<pre>func SolveGraph6(parallel bool) (int, *Graph)</pre>
 			<p>
 Function SolveGraph6 runs the algorithm on the graph
 sample-problems/problem6;solution-21.jpg
@@ -333,8 +358,8 @@ implementation still provides the correct answer.
 		
 			
 			
-			<h2 id="SolveRandomGraph">func <a href="/src/pkg/graph/test.go?s=4711:4760#L195">SolveRandomGraph</a></h2>
-			<pre>func SolveRandomGraph() (int, *Graph, Node, Node)</pre>
+			<h2 id="SolveRandomGraph">func <a href="/src/pkg/graph/test.go?s=5298:5360#L222">SolveRandomGraph</a></h2>
+			<pre>func SolveRandomGraph(parallel bool) (int, *Graph, Node, Node)</pre>
 			<p>
 Function SolveRandomGraph() runs the algorithm on a random graph.
 </p>
@@ -344,7 +369,7 @@ Function SolveRandomGraph() runs the algorithm on a random graph.
 		
 			
 			
-			<h2 id="Graph">type <a href="/src/pkg/graph/graphstruct.go?s=824:875#L19">Graph</a></h2>
+			<h2 id="Graph">type <a href="/src/pkg/graph/graph-struct.go?s=824:875#L19">Graph</a></h2>
 			<pre>type Graph struct {
     Nodemap map[Node][]Neighbour
 }</pre>
@@ -362,7 +387,7 @@ of neighbours connected to that node is the key.
 
 			
 				
-				<h3 id="GenBlankGraph">func <a href="/src/pkg/graph/graphstruct.go?s=934:961#L24">GenBlankGraph</a></h3>
+				<h3 id="GenBlankGraph">func <a href="/src/pkg/graph/graph-struct.go?s=934:961#L24">GenBlankGraph</a></h3>
 				<pre>func GenBlankGraph() *Graph</pre>
 				<p>
 Function GenBlankGraph initializes a new empty graph.
@@ -371,7 +396,7 @@ Function GenBlankGraph initializes a new empty graph.
 				
 			
 				
-				<h3 id="GenRandomGraph">func <a href="/src/pkg/graph/graphstruct.go?s=5289:5348#L140">GenRandomGraph</a></h3>
+				<h3 id="GenRandomGraph">func <a href="/src/pkg/graph/graph-struct.go?s=5289:5348#L140">GenRandomGraph</a></h3>
 				<pre>func GenRandomGraph(nodenum, connectnum, maxcap int) *Graph</pre>
 				<p>
 Function GenRandomGraph initializes a new graph, fills it with a given
@@ -383,7 +408,7 @@ number of nodes and connections with random values, and returns the graph.
 
 			
 				
-				<h3 id="Graph.AddNeighbour">func (*Graph) <a href="/src/pkg/graph/graphstruct.go?s=2720:2800#L77">AddNeighbour</a></h3>
+				<h3 id="Graph.AddNeighbour">func (*Graph) <a href="/src/pkg/graph/graph-struct.go?s=2720:2800#L77">AddNeighbour</a></h3>
 				<pre>func (g *Graph) AddNeighbour(source Node, destination Node, capacity int) *Graph</pre>
 				<p>
 Function AddNeighbour is a graph-associated method that initializes a
@@ -397,7 +422,7 @@ exist, or if the connection already exists.
 				
 			
 				
-				<h3 id="Graph.AddNode">func (*Graph) <a href="/src/pkg/graph/graphstruct.go?s=2216:2257#L64">AddNode</a></h3>
+				<h3 id="Graph.AddNode">func (*Graph) <a href="/src/pkg/graph/graph-struct.go?s=2216:2257#L64">AddNode</a></h3>
 				<pre>func (g *Graph) AddNode(node Node) *Graph</pre>
 				<p>
 Function AddNode is a graph-associated method that initializes a node
@@ -409,7 +434,7 @@ if the node is already initialized.
 				
 			
 				
-				<h3 id="Graph.GetNeighbours">func (*Graph) <a href="/src/pkg/graph/graphstruct.go?s=1129:1181#L32">GetNeighbours</a></h3>
+				<h3 id="Graph.GetNeighbours">func (*Graph) <a href="/src/pkg/graph/graph-struct.go?s=1129:1181#L32">GetNeighbours</a></h3>
 				<pre>func (g *Graph) GetNeighbours(node Node) []Neighbour</pre>
 				<p>
 Function GetNeighbours is a graph-associated method that returns the
@@ -420,7 +445,7 @@ neighbours of a given node.
 				
 			
 				
-				<h3 id="Graph.GetNodeList">func (*Graph) <a href="/src/pkg/graph/graphstruct.go?s=1784:1820#L51">GetNodeList</a></h3>
+				<h3 id="Graph.GetNodeList">func (*Graph) <a href="/src/pkg/graph/graph-struct.go?s=1784:1820#L51">GetNodeList</a></h3>
 				<pre>func (g *Graph) GetNodeList() []Node</pre>
 				<p>
 Function GetNodeList is a graph-associated method that returns a list
@@ -431,7 +456,7 @@ of all initialized nodes.  Useful for iteration.
 				
 			
 				
-				<h3 id="Graph.GetWeight">func (*Graph) <a href="/src/pkg/graph/graphstruct.go?s=1359:1419#L38">GetWeight</a></h3>
+				<h3 id="Graph.GetWeight">func (*Graph) <a href="/src/pkg/graph/graph-struct.go?s=1359:1419#L38">GetWeight</a></h3>
 				<pre>func (g *Graph) GetWeight(source Node, destination Node) int</pre>
 				<p>
 Function GetWeight is a graph-associated method that returns the weight
@@ -442,7 +467,7 @@ of a connection from a given source node to a given destination node.
 				
 			
 				
-				<h3 id="Graph.UpdateWeight">func (*Graph) <a href="/src/pkg/graph/graphstruct.go?s=4043:4121#L110">UpdateWeight</a></h3>
+				<h3 id="Graph.UpdateWeight">func (*Graph) <a href="/src/pkg/graph/graph-struct.go?s=4043:4121#L110">UpdateWeight</a></h3>
 				<pre>func (g *Graph) UpdateWeight(source Node, destination Node, weight int) *Graph</pre>
 				<p>
 Function UpdateWeight is a graph-associated method that updates the weight
@@ -457,7 +482,7 @@ as is if the new weight is greater than the connection&#39;s capacity.
 		
 			
 			
-			<h2 id="Neighbour">type <a href="/src/pkg/graph/graphstruct.go?s=622:692#L12">Neighbour</a></h2>
+			<h2 id="Neighbour">type <a href="/src/pkg/graph/graph-struct.go?s=622:692#L12">Neighbour</a></h2>
 			<pre>type Neighbour struct {
     Neighbour_Node   Node
     Weight, Capacity int
@@ -480,7 +505,7 @@ the weight and capacity of the connection.
 		
 			
 			
-			<h2 id="Node">type <a href="/src/pkg/graph/graphstruct.go?s=465:495#L6">Node</a></h2>
+			<h2 id="Node">type <a href="/src/pkg/graph/graph-struct.go?s=465:495#L6">Node</a></h2>
 			<pre>type Node struct {
     X, Y int
 }</pre>
