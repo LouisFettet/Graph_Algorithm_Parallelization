@@ -4,7 +4,9 @@
 
 package graph
 
-import "time"
+import (
+	"time"
+)
 
 // Function ParallelEdmondsKarp accepts a graph with a valid source and sink
 // node, and returns the maximum flow as an integer along with a graph with a
@@ -52,12 +54,11 @@ func ParallelBFS(g *Graph, source Node, sink Node) (int, map[Node]Node) {
 	path := make(map[Node]Node, length)
 	// Initialize the channels with function MakeChannels.  Four channels
 	// should be able to run on most modern systems without any issues. 
-	// Pass in the length so that a correct buffer size can be allocated. 
-	// channel1, channel2, channel3, channel4 := MakeChannels(length)
+	// channel1, channel2, channel3, channel4 := MakeChannels()
 	// Initialize a node which can be used to tell if a node has been 
 	// discovered yet or not, and give every node that key to begin.
 	notvisited := Node{-1, -1}
-	go SetNotVisited(nodelist, path, notvisited, 1, length/4)
+	go SetNotVisited(nodelist, path, notvisited, 0, length/4)
 	//<-channel1
 	go SetNotVisited(nodelist, path, notvisited, length/4, length/4*2)
 	//<-channel2
@@ -66,7 +67,6 @@ func ParallelBFS(g *Graph, source Node, sink Node) (int, map[Node]Node) {
 	go SetNotVisited(nodelist, path, notvisited, length/4*3, length)
 	//<-channel4
 	time.Sleep(time.Nanosecond)
-	//fmt.Println(path)
 	// Give the source a different key to ensure it is not rediscovered.
 	path[source] = Node{-2, -2}
 	// Initialize another map that records the capacity of a found path 
@@ -79,10 +79,6 @@ func ParallelBFS(g *Graph, source Node, sink Node) (int, map[Node]Node) {
 	q := GenQueue(0)
 	q.Enqueue(source)
 	// Loop until the queue is empty.
-	/*
-		go FindPath(g, q, source, sink, path, capmap)
-		fmt.Println(path[source])
-	*/
 	for q.GetSize() > 0 {
 		// Grab the first node in the queue and check all neighbours
 		// until one is found where flow can be pushed.
@@ -90,13 +86,19 @@ func ParallelBFS(g *Graph, source Node, sink Node) (int, map[Node]Node) {
 		for _, v := range g.GetNeighbours(u) {
 			// If there is available capacity and the neighbour
 			// has not been visited yet...
-			if v.Capacity-v.Weight > 0 && path[v.Neighbour_Node] == notvisited {
-				// Path can proceed from u to v by pushing 
-				// flow forward. Set u to be the parent of v.
+			if path[v.Neighbour_Node] == notvisited && (v.Capacity-v.Weight > 0 || (v.Weight < 0 && v.Capacity < 0)) {
+				// Path can proceed from u to v. 
+				// Set u to be the parent of v.
 				path[v.Neighbour_Node] = u
-				// Take the minimum of the flow of u and 
-				// and the available capacity of v.
-				capmap[v.Neighbour_Node] = Min(capmap[u], v.Capacity-v.Weight)
+				// Check to see whether the connection is 
+				// residual and then take the minimum of the 
+				// flow of u and and the available capacity 
+				// of v.
+				if v.Capacity > 0 {
+					capmap[v.Neighbour_Node] = Min(capmap[u], v.Capacity-v.Weight)
+				} else if v.Capacity < 0 {
+					capmap[v.Neighbour_Node] = Min(capmap[u], v.Weight-v.Capacity)
+				}
 				if v.Neighbour_Node != sink {
 					// We have not reached the sink. We 
 					// enqueue v.Neighbour_Node and 
@@ -107,27 +109,6 @@ func ParallelBFS(g *Graph, source Node, sink Node) (int, map[Node]Node) {
 					// return.
 					return capmap[sink], path
 				}
-				// Else if capacity and weight are both 
-				// negative (residual connection), and the 
-				// neighbour has not been visited
-			} else if v.Capacity < 0 && v.Weight < 0 && path[v.Neighbour_Node] == notvisited {
-				// Path can proceed from u to v by pushing 
-				// flow backward. Set u to be the parent of
-				// v.
-				path[v.Neighbour_Node] = u
-				// Take the minimum of the flow of u and 
-				// and the available capacity of v.
-				capmap[v.Neighbour_Node] = Min(capmap[u], v.Weight-v.Capacity)
-				if v.Neighbour_Node != sink {
-					// We have not reached the sink.  
-					// We enqueue v.Neighbour_Node 
-					// and continue.
-					q.Enqueue(v.Neighbour_Node)
-				} else {
-					// We have reached the sink, so we
-					// return.
-					return capmap[sink], path
-				}
 			}
 		}
 	}
@@ -135,21 +116,19 @@ func ParallelBFS(g *Graph, source Node, sink Node) (int, map[Node]Node) {
 	return 0, path
 }
 
-/*
-func MakeChannels(length int) (chan int, chan int, chan int, chan int) {
-	channel1 := make(chan int, length*2)
-	channel2 := make(chan int, length*2)
-	channel3 := make(chan int, length*2)
-	channel4 := make(chan int, length*2)
+func MakeChannels() (chan int, chan int, chan int, chan int) {
+	channel1 := make(chan int)
+	channel2 := make(chan int)
+	channel3 := make(chan int)
+	channel4 := make(chan int)
 	return channel1, channel2, channel3, channel4
 }
-*/
 
 func SetNotVisited(nodelist []Node, path map[Node]Node, notvisited Node, head int, tail int) {
 	for _, node := range nodelist[head:tail] {
 		path[node] = notvisited
-		//		channel <- 0
 	}
+	//channel <- 0
 }
 
 /*

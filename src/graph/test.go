@@ -4,8 +4,6 @@
 
 package graph
 
-import "math/rand"
-
 var flow int
 var solution *Graph
 
@@ -229,11 +227,7 @@ func SolveGraph6(parallel bool) (int, *Graph) {
 }
 
 // Function SolveRandomGraph() runs the algorithm on a random graph.
-func SolveRandomGraph(parallel bool) (int, *Graph, Node, Node) {
-	gr := GenRandomGraph(100, 300, 50)
-	nodelist := gr.GetNodeList()
-	source := nodelist[rand.Intn(100)]
-	sink := nodelist[rand.Intn(100)]
+func SolveRandomGraph(gr *Graph, source Node, sink Node, parallel bool) (int, *Graph, Node, Node) {
 	if parallel == false {
 		flow, solution = EdmondsKarp(gr, source, sink)
 	} else {

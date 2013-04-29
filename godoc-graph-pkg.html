@@ -91,6 +91,9 @@ graphic interfaces are also available.
 				<dd><a href="#EdmondsKarp">func EdmondsKarp(g *Graph, source Node, sink Node) (int, *Graph)</a></dd>
 			
 				
+				<dd><a href="#MakeChannels">func MakeChannels() (chan int, chan int, chan int, chan int)</a></dd>
+			
+				
 				<dd><a href="#Min">func Min(x, y int) int</a></dd>
 			
 				
@@ -121,7 +124,7 @@ graphic interfaces are also available.
 				<dd><a href="#SolveGraph6">func SolveGraph6(parallel bool) (int, *Graph)</a></dd>
 			
 				
-				<dd><a href="#SolveRandomGraph">func SolveRandomGraph(parallel bool) (int, *Graph, Node, Node)</a></dd>
+				<dd><a href="#SolveRandomGraph">func SolveRandomGraph(gr *Graph, source Node, sink Node, parallel bool) (int, *Graph, Node, Node)</a></dd>
 			
 			
 				
@@ -248,6 +251,13 @@ through the graph.
 		
 			
 			
+			<h2 id="MakeChannels">func <a href="/src/pkg/graph/parallel-algo.go?s=4340:4400#L109">MakeChannels</a></h2>
+			<pre>func MakeChannels() (chan int, chan int, chan int, chan int)</pre>
+			
+			
+		
+			
+			
 			<h2 id="Min">func <a href="/src/pkg/graph/support-funcs.go?s=312:334#L1">Min</a></h2>
 			<pre>func Min(x, y int) int</pre>
 			<p>
@@ -258,7 +268,7 @@ Function Min returns the smaller of two integers.
 		
 			
 			
-			<h2 id="ParallelBFS">func <a href="/src/pkg/graph/parallel-algo.go?s=1608:1679#L36">ParallelBFS</a></h2>
+			<h2 id="ParallelBFS">func <a href="/src/pkg/graph/parallel-algo.go?s=1613:1684#L38">ParallelBFS</a></h2>
 			<pre>func ParallelBFS(g *Graph, source Node, sink Node) (int, map[Node]Node)</pre>
 			<p>
 Function ParallelBFS accepts a graph with a valid source and sink
@@ -270,7 +280,7 @@ the flow of the found path using channels to speed up runtime.
 		
 			
 			
-			<h2 id="ParallelEdmondsKarp">func <a href="/src/pkg/graph/parallel-algo.go?s=440:512#L3">ParallelEdmondsKarp</a></h2>
+			<h2 id="ParallelEdmondsKarp">func <a href="/src/pkg/graph/parallel-algo.go?s=445:517#L5">ParallelEdmondsKarp</a></h2>
 			<pre>func ParallelEdmondsKarp(g *Graph, source Node, sink Node) (int, *Graph)</pre>
 			<p>
 Function ParallelEdmondsKarp accepts a graph with a valid source and sink
@@ -283,14 +293,14 @@ valid paths through the graph.
 		
 			
 			
-			<h2 id="SetNotVisited">func <a href="/src/pkg/graph/parallel-algo.go?s=5361:5453#L138">SetNotVisited</a></h2>
+			<h2 id="SetNotVisited">func <a href="/src/pkg/graph/parallel-algo.go?s=4565:4657#L117">SetNotVisited</a></h2>
 			<pre>func SetNotVisited(nodelist []Node, path map[Node]Node, notvisited Node, head int, tail int)</pre>
 			
 			
 		
 			
 			
-			<h2 id="SolveGraph1">func <a href="/src/pkg/graph/test.go?s=318:363#L4">SolveGraph1</a></h2>
+			<h2 id="SolveGraph1">func <a href="/src/pkg/graph/test.go?s=298:343#L2">SolveGraph1</a></h2>
 			<pre>func SolveGraph1(parallel bool) (int, *Graph)</pre>
 			<p>
 Function SolveGraph1 runs the algorithm on the graph
@@ -301,7 +311,7 @@ sample-problems/problem1;solution-5.png
 		
 			
 			
-			<h2 id="SolveGraph2">func <a href="/src/pkg/graph/test.go?s=1152:1197#L41">SolveGraph2</a></h2>
+			<h2 id="SolveGraph2">func <a href="/src/pkg/graph/test.go?s=1132:1177#L39">SolveGraph2</a></h2>
 			<pre>func SolveGraph2(parallel bool) (int, *Graph)</pre>
 			<p>
 Function SolveGraph2 runs the algorithm on the graph
@@ -312,7 +322,7 @@ sample-problems/problem2;solution-5.svg
 		
 			
 			
-			<h2 id="SolveGraph3">func <a href="/src/pkg/graph/test.go?s=1877:1922#L73">SolveGraph3</a></h2>
+			<h2 id="SolveGraph3">func <a href="/src/pkg/graph/test.go?s=1857:1902#L71">SolveGraph3</a></h2>
 			<pre>func SolveGraph3(parallel bool) (int, *Graph)</pre>
 			<p>
 Function SolveGraph3 runs the algorithm on the graph
@@ -323,7 +333,7 @@ sample-problems/problem3;solution-15.jpg
 		
 			
 			
-			<h2 id="SolveGraph4">func <a href="/src/pkg/graph/test.go?s=2462:2507#L98">SolveGraph4</a></h2>
+			<h2 id="SolveGraph4">func <a href="/src/pkg/graph/test.go?s=2442:2487#L96">SolveGraph4</a></h2>
 			<pre>func SolveGraph4(parallel bool) (int, *Graph)</pre>
 			<p>
 Function SolveGraph4 runs the algorithm on the graph
@@ -334,7 +344,7 @@ sample-problems/problem4;solution-3.gif
 		
 			
 			
-			<h2 id="SolveGraph5">func <a href="/src/pkg/graph/test.go?s=3218:3263#L132">SolveGraph5</a></h2>
+			<h2 id="SolveGraph5">func <a href="/src/pkg/graph/test.go?s=3198:3243#L130">SolveGraph5</a></h2>
 			<pre>func SolveGraph5(parallel bool) (int, *Graph)</pre>
 			<p>
 Function SolveGraph5 runs the algorithm on the graph
@@ -345,7 +355,7 @@ sample-problems/problem5;solution-4.gif
 		
 			
 			
-			<h2 id="SolveGraph6">func <a href="/src/pkg/graph/test.go?s=4215:4260#L173">SolveGraph6</a></h2>
+			<h2 id="SolveGraph6">func <a href="/src/pkg/graph/test.go?s=4195:4240#L171">SolveGraph6</a></h2>
 			<pre>func SolveGraph6(parallel bool) (int, *Graph)</pre>
 			<p>
 Function SolveGraph6 runs the algorithm on the graph
@@ -358,8 +368,8 @@ implementation still provides the correct answer.
 		
 			
 			
-			<h2 id="SolveRandomGraph">func <a href="/src/pkg/graph/test.go?s=5298:5360#L222">SolveRandomGraph</a></h2>
-			<pre>func SolveRandomGraph(parallel bool) (int, *Graph, Node, Node)</pre>
+			<h2 id="SolveRandomGraph">func <a href="/src/pkg/graph/test.go?s=5278:5375#L220">SolveRandomGraph</a></h2>
+			<pre>func SolveRandomGraph(gr *Graph, source Node, sink Node, parallel bool) (int, *Graph, Node, Node)</pre>
 			<p>
 Function SolveRandomGraph() runs the algorithm on a random graph.
 </p>

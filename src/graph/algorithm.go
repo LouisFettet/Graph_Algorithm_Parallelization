@@ -73,13 +73,19 @@ func BreadthFirstSearch(g *Graph, source Node, sink Node) (int, map[Node]Node) {
 		for _, v := range g.GetNeighbours(u) {
 			// If there is available capacity and the neighbour
 			// has not been visited yet...
-			if v.Capacity-v.Weight > 0 && path[v.Neighbour_Node] == notvisited {
-				// Path can proceed from u to v by pushing 
-				// flow forward. Set u to be the parent of v.
+			if path[v.Neighbour_Node] == notvisited && (v.Capacity-v.Weight > 0 || (v.Weight < 0 && v.Capacity < 0)) {
+				// Path can proceed from u to v. 
+				// Set u to be the parent of v.
 				path[v.Neighbour_Node] = u
-				// Take the minimum of the flow of u and 
-				// and the available capacity of v.
-				capmap[v.Neighbour_Node] = Min(capmap[u], v.Capacity-v.Weight)
+				// Check to see whether the connection is 
+				// residual and then take the minimum of the 
+				// flow of u and and the available capacity 
+				// of v.
+				if v.Capacity > 0 {
+					capmap[v.Neighbour_Node] = Min(capmap[u], v.Capacity-v.Weight)
+				} else if v.Capacity < 0 {
+					capmap[v.Neighbour_Node] = Min(capmap[u], v.Weight-v.Capacity)
+				}
 				if v.Neighbour_Node != sink {
 					// We have not reached the sink. We 
 					// enqueue v.Neighbour_Node and 
@@ -87,27 +93,6 @@ func BreadthFirstSearch(g *Graph, source Node, sink Node) (int, map[Node]Node) {
 					q.Enqueue(v.Neighbour_Node)
 				} else {
 					// We have reached the sink and we 
-					// return.
-					return capmap[sink], path
-				}
-				// Else if capacity and weight are both 
-				// negative (residual connection), and the 
-				// neighbour has not been visited
-			} else if v.Capacity < 0 && v.Weight < 0 && path[v.Neighbour_Node] == notvisited {
-				// Path can proceed from u to v by pushing 
-				// flow backward. Set u to be the parent of
-				// v.
-				path[v.Neighbour_Node] = u
-				// Take the minimum of the flow of u and 
-				// and the available capacity of v.
-				capmap[v.Neighbour_Node] = Min(capmap[u], v.Weight-v.Capacity)
-				if v.Neighbour_Node != sink {
-					// We have not reached the sink.  
-					// We enqueue v.Neighbour_Node 
-					// and continue.
-					q.Enqueue(v.Neighbour_Node)
-				} else {
-					// We have reached the sink, so we
 					// return.
 					return capmap[sink], path
 				}
