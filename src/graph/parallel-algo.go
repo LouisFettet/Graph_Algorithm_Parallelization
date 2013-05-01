@@ -4,9 +4,12 @@
 
 package graph
 
-import (
-	"time"
-)
+// Initialize a number of CPU cores.
+var NCPU = 4
+
+// Set up a semaphore that will be used in the ParallelBFS...
+type empty struct{}
+type semaphore chan empty
 
 // Function ParallelEdmondsKarp accepts a graph with a valid source and sink
 // node, and returns the maximum flow as an integer along with a graph with a
@@ -46,48 +49,80 @@ func ParallelEdmondsKarp(g *Graph, source Node, sink Node) (int, *Graph) {
 // node, and returns a valid path through the graph's flow network along with
 // the flow of the found path using channels to speed up runtime.
 func ParallelBFS(g *Graph, source Node, sink Node) (int, map[Node]Node) {
+
 	// Create a map in which nodes have node keys corresponding to a
 	// parent/source to child/destination relationship.  This will be the
 	// path returned.
 	nodelist := g.GetNodeList()
-	length := len(nodelist)
-	path := make(map[Node]Node, length)
-	// Initialize the channels with function MakeChannels.  Four channels
-	// should be able to run on most modern systems without any issues. 
-	// channel1, channel2, channel3, channel4 := MakeChannels()
+	nodecount := len(nodelist)
+	path := make(map[Node]Node, nodecount)
+
+	// Initialize channel with buffer size of cores used.
+	c := make(chan int, NCPU)
+
 	// Initialize a node which can be used to tell if a node has been 
 	// discovered yet or not, and give every node that key to begin.
 	notvisited := Node{-1, -1}
-	go SetNotVisited(nodelist, path, notvisited, 0, length/4)
-	//<-channel1
-	go SetNotVisited(nodelist, path, notvisited, length/4, length/4*2)
-	//<-channel2
-	go SetNotVisited(nodelist, path, notvisited, length/4*2, length/4*3)
-	//<-channel3
-	go SetNotVisited(nodelist, path, notvisited, length/4*3, length)
-	//<-channel4
-	time.Sleep(time.Nanosecond)
+	for i := 0; i < NCPU; i++ {
+		// We will set each node concurrently for slight speed-up...
+		go func(i int) {
+			head := i * nodecount / NCPU
+			tail := (i + 1) * nodecount / NCPU
+			for _, node := range nodelist[head:tail] {
+				path[node] = notvisited
+			}
+			c <- 1
+		}(i)
+	}
+	// Drain the channel...
+	for i := 0; i < NCPU; i++ {
+		<-c
+	}
+
 	// Give the source a different key to ensure it is not rediscovered.
 	path[source] = Node{-2, -2}
+
 	// Initialize another map that records the capacity of a found path 
 	// to a node.
-	capmap := make(map[Node]int, length)
+	capmap := make(map[Node]int, nodecount)
+
 	// Set the source's flow to infinity; math.Inf() is a float64, so we 
 	// just make it huge.
 	capmap[source] = 1000000
+
 	// Initialize a queue and enqueue the source node.
 	q := GenQueue(0)
 	q.Enqueue(source)
+
 	// Loop until the queue is empty.
 	for q.GetSize() > 0 {
-		// Grab the first node in the queue and check all neighbours
-		// until one is found where flow can be pushed.
+
+		// Grab the first node in the queue...
 		u := q.Dequeue()
-		for _, v := range g.GetNeighbours(u) {
+
+		// And grab all of its neighbours.
+		neighbours := g.GetNeighbours(u)
+
+		// Initialize a slice for valid neighbours, where the path
+		// can proceed from u to v.
+		var valids []Neighbour
+
+		// Validate the neighbours to see which ones to iterate over.
+		for _, v := range neighbours {
 			// If there is available capacity and the neighbour
 			// has not been visited yet...
 			if path[v.Neighbour_Node] == notvisited && (v.Capacity-v.Weight > 0 || (v.Weight < 0 && v.Capacity < 0)) {
-				// Path can proceed from u to v. 
+				valids = append(valids, v)
+			}
+		}
+
+		// Initialize the semaphore using the amount of valids.
+		semlen := len(valids)
+		sem := make(semaphore, semlen)
+
+		// Concurrently iterate over each valid.
+		for _, v := range valids {
+			go func(u Node, v Neighbour) {
 				// Set u to be the parent of v.
 				path[v.Neighbour_Node] = u
 				// Check to see whether the connection is 
@@ -99,41 +134,26 @@ func ParallelBFS(g *Graph, source Node, sink Node) (int, map[Node]Node) {
 				} else if v.Capacity < 0 {
 					capmap[v.Neighbour_Node] = Min(capmap[u], v.Weight-v.Capacity)
 				}
-				if v.Neighbour_Node != sink {
+				switch {
+				case v.Neighbour_Node != sink:
 					// We have not reached the sink. We 
 					// enqueue v.Neighbour_Node and 
 					// continue.
 					q.Enqueue(v.Neighbour_Node)
-				} else {
-					// We have reached the sink and we 
-					// return.
-					return capmap[sink], path
+				case v.Neighbour_Node == sink:
+					// We have reached the sink, so
+					// we empty the queue, break, and 
+					// return immediately.
+					q = GenQueue(0)
+					break
 				}
-			}
+				sem <- empty{}
+			}(u, v)
+		}
+		// Drain the semaphore; wait for goroutines to finish.
+		for i := 0; i < semlen; i++ {
+			<-sem
 		}
 	}
-	// No paths were found, so we return 0 and whatever path was built.
-	return 0, path
+	return capmap[sink], path
 }
-
-func MakeChannels() (chan int, chan int, chan int, chan int) {
-	channel1 := make(chan int)
-	channel2 := make(chan int)
-	channel3 := make(chan int)
-	channel4 := make(chan int)
-	return channel1, channel2, channel3, channel4
-}
-
-func SetNotVisited(nodelist []Node, path map[Node]Node, notvisited Node, head int, tail int) {
-	for _, node := range nodelist[head:tail] {
-		path[node] = notvisited
-	}
-	//channel <- 0
-}
-
-/*
-func FindPath(g *Graph, q *Queue, source Node, sink Node, path map[Node]Node, capmap map[Node]int) {
-	path[source] = Node{0, 0}
-	fmt.Println("kk")
-}
-*/

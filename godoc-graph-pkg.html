@@ -80,6 +80,8 @@ graphic interfaces are also available.
 			<dl>
 			
 			
+				<dd><a href="#variables">Variables</a></dd>
+			
 			
 				
 				<dd><a href="#Abs">func Abs(n int) int</a></dd>
@@ -91,9 +93,6 @@ graphic interfaces are also available.
 				<dd><a href="#EdmondsKarp">func EdmondsKarp(g *Graph, source Node, sink Node) (int, *Graph)</a></dd>
 			
 				
-				<dd><a href="#MakeChannels">func MakeChannels() (chan int, chan int, chan int, chan int)</a></dd>
-			
-				
 				<dd><a href="#Min">func Min(x, y int) int</a></dd>
 			
 				
@@ -101,9 +100,6 @@ graphic interfaces are also available.
 			
 				
 				<dd><a href="#ParallelEdmondsKarp">func ParallelEdmondsKarp(g *Graph, source Node, sink Node) (int, *Graph)</a></dd>
-			
-				
-				<dd><a href="#SetNotVisited">func SetNotVisited(nodelist []Node, path map[Node]Node, notvisited Node, head int, tail int)</a></dd>
 			
 				
 				<dd><a href="#SolveGraph1">func SolveGraph1(parallel bool) (int, *Graph)</a></dd>
@@ -199,8 +195,6 @@ graphic interfaces are also available.
 			
 				<a href="/src/pkg/graph/parallel-algo.go">parallel-algo.go</a>
 			
-				<a href="/src/pkg/graph/plot-graph.go">plot-graph.go</a>
-			
 				<a href="/src/pkg/graph/queue.go">queue.go</a>
 			
 				<a href="/src/pkg/graph/support-funcs.go">support-funcs.go</a>
@@ -212,6 +206,15 @@ graphic interfaces are also available.
 		
 	
 		
+		
+			<h2 id="variables">Variables</h2>
+			
+				<pre>var NCPU = 4</pre>
+				<p>
+Initialize a number of CPU cores.
+</p>
+
+			
 		
 		
 			
@@ -251,13 +254,6 @@ through the graph.
 		
 			
 			
-			<h2 id="MakeChannels">func <a href="/src/pkg/graph/parallel-algo.go?s=4340:4400#L109">MakeChannels</a></h2>
-			<pre>func MakeChannels() (chan int, chan int, chan int, chan int)</pre>
-			
-			
-		
-			
-			
 			<h2 id="Min">func <a href="/src/pkg/graph/support-funcs.go?s=312:334#L1">Min</a></h2>
 			<pre>func Min(x, y int) int</pre>
 			<p>
@@ -268,7 +264,7 @@ Function Min returns the smaller of two integers.
 		
 			
 			
-			<h2 id="ParallelBFS">func <a href="/src/pkg/graph/parallel-algo.go?s=1613:1684#L38">ParallelBFS</a></h2>
+			<h2 id="ParallelBFS">func <a href="/src/pkg/graph/parallel-algo.go?s=1753:1824#L41">ParallelBFS</a></h2>
 			<pre>func ParallelBFS(g *Graph, source Node, sink Node) (int, map[Node]Node)</pre>
 			<p>
 Function ParallelBFS accepts a graph with a valid source and sink
@@ -280,7 +276,7 @@ the flow of the found path using channels to speed up runtime.
 		
 			
 			
-			<h2 id="ParallelEdmondsKarp">func <a href="/src/pkg/graph/parallel-algo.go?s=445:517#L5">ParallelEdmondsKarp</a></h2>
+			<h2 id="ParallelEdmondsKarp">func <a href="/src/pkg/graph/parallel-algo.go?s=585:657#L8">ParallelEdmondsKarp</a></h2>
 			<pre>func ParallelEdmondsKarp(g *Graph, source Node, sink Node) (int, *Graph)</pre>
 			<p>
 Function ParallelEdmondsKarp accepts a graph with a valid source and sink
@@ -289,13 +285,6 @@ valid flow network. The function runs a parallelized BFS in order to find
 valid paths through the graph.
 </p>
 
-			
-		
-			
-			
-			<h2 id="SetNotVisited">func <a href="/src/pkg/graph/parallel-algo.go?s=4565:4657#L117">SetNotVisited</a></h2>
-			<pre>func SetNotVisited(nodelist []Node, path map[Node]Node, notvisited Node, head int, tail int)</pre>
-			
 			
 		
 			
