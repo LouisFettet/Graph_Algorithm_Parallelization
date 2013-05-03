@@ -1,0 +1,25 @@
+\documentclass[12pt]{article}
+\usepackage{hyperref}
+\title{\textbf{Graph Algorithm Parallelization}\\ 
+Edmonds-Karp Algorithm Implementation in the Go Programming Language\\ 
+Final Report}
+\date{Computer Science Capstone Project Spring 2013}
+\author{Louis L. Fettet}
+\begin{document}
+\maketitle
+\section{Project Definition}
+The initial goal of this project was to design a parallel implementation of the Edmonds-Karp algorithm, which is a modification of the Fords-Fulkerson used to calculate the maximum flow through a directed graph or flow network.  For all extensive purposes, that goal has been accomplished and no additional work is required.
+\section{Design}
+\indent The project was built and implemented in Google's Golang, which I had never used before now.  The source files of the project are separated into a main directory, used primarily for testing, and a graph package, where the bulk of the project was written.  The graph package is comprised primarily of:
+\begin {enumerate}
+\item \textbf{graph-struct.go:} houses the weighted graph structure and accompanying methods to create and edit graphs
+\item \textbf{algorithm.go:} serial implementation of the Edmonds-Karp
+\item \textbf{parallel-algo.go:}  implementation of the Edmonds-Karp that utilizes a Breadth-First Search which runs concurrent checks on possible paths
+\item \textbf{test.go:} initialization of sample graphs to run time trials of the algorithms against each other in main
+\end {enumerate}
+\section{Results}
+\indent Once completed, the algorithms were run on six small test cases and a randomly-generated graph of much larger size.  Interestingly enough, due to the overhead of implementing a semaphore and other channels, the concurrent algorithm ran slightly slower than the serial on the small graphs, but impressively faster on the larger one.\\
+\section{Source Code}
+All project resources can be found on my GitHub Capstone repository,\\*
+\centerline{\url{http://github.com/LouisFettet/Graph_Algorithm_Parallelization}}
+\end{document}
